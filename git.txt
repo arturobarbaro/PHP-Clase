@@ -1,0 +1,3 @@
+Para eliminar definitivamente un repositorio:
+1. git reset HEAD --hard
+
