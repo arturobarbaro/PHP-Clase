@@ -2,7 +2,7 @@ Para eliminar definitivamente un repositorio:
 1. git reset HEAD --hard
 
 Corregir defecto en commit
-1. git commit --amend -m "Mismo mensaje quel anterior"
+1. git commit --amend -m "Mismo mensaje anterior"
 
 Añadir etiquetas a un commit. Ej perdido
 1. git tag perdido "nº commit"
@@ -11,3 +11,23 @@ Cambio de nombre de un archivo
 1. mv archivoviejo archivonuevo
 2. git add .
 3. git commit -m blabla
+
+Manejo de ramas
+1. git branch
+    //Crear ramas
+ 1. git branch nombreRama //crea una rama sin moverse a ella
+ 2. git checkout nombreRama
+ 1. git checkout -b nombreRama //crea rama pero se mueve a ella
+    //Eliminar ramas
+ 1. git checkout otraRama //Moverse a otra rama antes de elminarla
+ 2. git branch -d nombreRama
+    //Comprobar diferencia dos Ramas
+ 1. git dif rama --not otraRama
+
+    //Fusionar dos ramas (tecnicas)
+    - merge
+        - fast-foward //mas sencilla
+        - recursive   //padre multiple
+    - rebase
+ 1. git checkout master
+ 2. git merge ramaFusionar
