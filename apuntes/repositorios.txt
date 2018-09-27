@@ -8,3 +8,5 @@ Obtener repositorio remoto:
     git fetch
 4. Actualiza el puntero master local a origin/master
     git merge origin/master
+
+3. git pull //realiza los pasos 3 y 4 solos
