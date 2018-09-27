@@ -1,0 +1,10 @@
+Obtener repositorio remoto:
+
+1. Clonar repositorio
+    git clone url (nombre Opcional)
+2. Importar ramas
+    git checkout rama
+3. Importa el repositorio remoto
+    git fetch
+4. Actualiza el puntero master local a origin/master
+    git merge origin/master
