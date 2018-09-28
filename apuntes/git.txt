@@ -38,4 +38,5 @@ Manejo de ramas
 1. git checkout master //rama que vas a cambiar
 2. git rebase prueba   // prueba es el commit
 
+git branch -d rama
 git remote prune origin //elimina el puntero o los punteros que es el representante local de una rama remota q no existe
