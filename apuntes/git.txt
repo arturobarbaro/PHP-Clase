@@ -1,5 +1,8 @@
 Para eliminar definitivamente un repositorio:
 1. git reset HEAD --hard
+o
+1. git reset "numero commit" --hard
+2 git push -f
 
 Corregir defecto en commit
 1. git commit --amend -m "Mismo mensaje anterior"
