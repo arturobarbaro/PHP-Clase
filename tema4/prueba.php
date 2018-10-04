@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="es" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Prueba</title>
-  </head>
-  <body>
-    <?php
-     echo "Hola mundo";
-    ?>
-  </body>
+<?php
 
-</html>
+echo "Hola mundo";
+
+echo "El valor de argc es: ", $argc, PHP_EOL;
+
+var_dump($argv);

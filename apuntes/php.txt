@@ -1,0 +1,5 @@
+Borrar una variable
+	unset($variable)
+
+Asignacion por referencia
+    =&  //$y =& $x;
