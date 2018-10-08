@@ -3,3 +3,24 @@ Borrar una variable
 
 Asignacion por referencia
     =&  //$y =& $x;
+
+Comprobaciones
+-de tipos (is_numeric)
+-de valores (ctype_)
+
+Conversiones de tipos
+-Casting
+    (tipo)$x //(int)$x
+-Funciones
+    intval(), floatval(), strval(), boolval()
+
+Comparaciones de valores
+    ==, ===, ....... x<=>y //-1,0,-1
+    x??y??z //Devuelve el primero no NULL, o NULL
+    boolean ? condicion1 : condicion2   //ternario
+    'condicion1' ?: condicionfalse //Operador elvis
+
+Constantes
+    define('NOMBRE_C',74);
+    const NOMBRE = 23;
+    defined(NOMBRE) //Comprueba si existe
