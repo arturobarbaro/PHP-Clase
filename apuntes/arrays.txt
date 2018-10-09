@@ -25,3 +25,4 @@ Funciones con arrays
     array_combine($clave, $valor)
     array_keys() //Devuelve las claves
     in_array(x, array_keys($a)) //Forma mas segura de comporbar si hay un elemento en una array
+    array_key_exists(clave, valor)
