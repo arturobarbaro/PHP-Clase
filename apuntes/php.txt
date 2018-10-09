@@ -24,3 +24,17 @@ Constantes
     define('NOMBRE_C',74);
     const NOMBRE = 23;
     defined(NOMBRE) //Comprueba si existe
+
+Inclusion de scripts
+    require __DIR__ . '/ejemplo.php' //Se sustituye esta linea por todo el contenido
+    BUSQUEDA (si no cuenta con una ruta)
+    1º -> include_path
+    2º -> en el mmismo directorio
+
+    include __DIR__ . 'ejemplo.php'
+    //si el fichero no existe require da error e include da un warming
+
+    require_once e include_once //Solo incluye una vez
+
+isset() //Determina si una variable existe y no es nula(is_null)
+empty() //Determina si una variable esta vacia(no existe o si su valor evalua a false)

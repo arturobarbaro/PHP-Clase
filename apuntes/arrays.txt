@@ -1,0 +1,27 @@
+Arrays:
+
+Declaracion de un array
+ - $a = array(23,47,35);
+ - $a = [23,"Juan",35];
+ - $a = [nombre=>"Juan", peso=>68];
+
+Recorrer un array
+ for each
+
+Operadores con arrays
+- Suma
+    [1,2,3]+[3=>"d",4=>"f"];
+    El primero se sobrepone al segundo
+- Comparacion
+    ==,===...
+
+Funciones con arrays
+    count($a)   //Cuantos elementos tiene
+    array_sum() //Suma los elementos
+    range()     //todos los elementos de un rango
+    sort()      //Ordena por valor de menor a mayor
+    ksort()|krsort()  //Ordena por clave
+    asort()     //Ordena por valor sin perder las claves
+    array_combine($clave, $valor)
+    array_keys() //Devuelve las claves
+    in_array(x, array_keys($a)) //Forma mas segura de comporbar si hay un elemento en una array
