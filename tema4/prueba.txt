@@ -1,8 +1,0 @@
-<php
-
- $x=4
- if ($X==4){
-    echo "Vale 4";
- } else{
-    echo "No vale 4";
- }

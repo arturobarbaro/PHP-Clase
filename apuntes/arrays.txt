@@ -6,7 +6,8 @@ Declaracion de un array
  - $a = [nombre=>"Juan", peso=>68];
 
 Recorrer un array
- for each
+ foreach ($a as $k => $v){ //as $v
+ }
 
 Operadores con arrays
 - Suma
@@ -26,3 +27,4 @@ Funciones con arrays
     array_keys() //Devuelve las claves
     in_array(x, array_keys($a)) //Forma mas segura de comporbar si hay un elemento en una array
     array_key_exists(clave, valor)
+    array_merged //fusiona los arrays modificando las claves, si estas coinciden gana el segundo

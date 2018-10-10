@@ -1,0 +1,7 @@
+Metodo esta definida en una clase, una funcion fuera de ella
+
+Crear una funcion
+ function hola(){
+ }
+
+
