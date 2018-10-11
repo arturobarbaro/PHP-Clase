@@ -1,3 +1,8 @@
+Ambitos en PHP
+ - "global": definidas a nivel de fichero. No asi en funciones de otros ficheros que incluyan a este. Se tiene acceso definiento esta variable con la palabra reservada "global" dentro de la funcion.
+ - local: dentro de un metodo o funcion, solo es visible a este.
+ - superglobals: de ambito total, las variables con este ambito ya estan definidas.
+
 Borrar una variable
 	unset($variable)
 

@@ -1,7 +1,13 @@
-Metodo esta definida en una clase, una funcion fuera de ella
+Metodo esta definido en una clase, una funcion fuera.
 
 Crear una funcion
  function hola(){
  }
 
+Asignar valores por defecto
+ function suma($a=0, $b=0){
+ }
 
+Declarar tipo de argumentos
+ function suma(int $a, int $b){
+ }
