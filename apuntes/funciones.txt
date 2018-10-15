@@ -9,5 +9,19 @@ Asignar valores por defecto
  }
 
 Declarar tipo de argumentos
- function suma(int $a, int $b){
+ function suma(?int $a, int $b){
+   //$a acepta enteros o nulos (nullables)
  }
+
+Declarar tipo de retorno
+ function suma($a, $b): (?)int{
+   // ? no obligatorio
+ }
+ function x(): void{
+    return; //No obligatorio, no devuelve nada
+ }
+
+Tipado estricto
+ Se activa en el fichero donde se llama a la funcion
+ Solo funciona cuando pides un float e insertas un int
+ declare(strict_types=1);
