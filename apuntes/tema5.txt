@@ -1,0 +1,8 @@
+CONCEPTOS BASICOS PHP II
+
+SAPI: Server API
+ Define el contexto de ejecucion del interprete.
+ -cli: (linea de comandos) $argc, $agv, stdin, stdout
+ -CGI: (Contexto antiguo)
+    FastCGI: FPM (version moderna CGI): Aplicable a PHP.
+ -Apache: PHP es un modulo(extensión) del Apache.

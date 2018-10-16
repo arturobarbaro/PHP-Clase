@@ -3,6 +3,9 @@ Ambitos en PHP
  - local: dentro de un metodo o funcion, solo es visible a este.
  - superglobals: de ambito total, las variables con este ambito ya estan definidas.
 
+ejecutar
+php -S localhost:puerto
+
 Borrar una variable
 	unset($variable)
 
