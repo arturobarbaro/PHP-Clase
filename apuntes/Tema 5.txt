@@ -1,0 +1,20 @@
+PHP 2: El retorno
+
+SAPI (Server API): Define el contexto en el que se ejecuta el intérprete y el contexto en el que se ejecutan los programas en el intérprete
+
+cli: command line interface	$argc, $argv, stdin, stdout
+CGI: Common Gateway Interface (FastCGI): FPM
+Apache: PHP es un mósulo del Apache
+
+Los \n se ignoran en HTML y se tratan como un espacio en blanco, así que si los usas en PHP embebido en HTML da lo mismo
+
+php -S localhost:8000 -> INICIAR SERVIDOR INTEGRADO
+
+RECUERDA!!! <?= expr ?> es como hacer un echo desde html
+
+En un if-else, el intérprete de php sabe qué trozos de html no debe ejecutar, don't worry daijoubu hakuna matata
+
+Ctrl + J al seleccionar varias líneas en Atom: unir líneas en una sola
+En Vim es lo mismo pero sólo se introduce J mayúscula
+
+http://localhost:8000/tabla.php?num=6 => le pasas el número 6 a tabla.php for un formulario
