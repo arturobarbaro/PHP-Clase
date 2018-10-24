@@ -13,3 +13,5 @@ DateTime:
  -Instancia
    var date = new DateTime;
    $date->getTimestamp();
+   //Cambiar zona horaria
+   &date->setTimezone(new DateTimZone ('Europe/Madrid'))
