@@ -1,0 +1,15 @@
+OBJETOS EN PHP:
+
+    $a -> atributo; //NO -> $
+    $a -> metodo();
+    $b = clone $a; //Copia superficial
+
+1º asignacion (=)
+2º asig por referencia (=&)
+3º clonacion (clone) //dos objetos distintos
+
+DateTime:
+//Se pueden manipular con objetos o no. Siempre en UTC
+ -Instancia
+   var date = new DateTime;
+   $date->getTimestamp();
