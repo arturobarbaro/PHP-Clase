@@ -8,6 +8,32 @@ OBJETOS EN PHP:
 2º asig por referencia (=&)
 3º clonacion (clone) //dos objetos distintos
 
+  Operadores:
+   new, clone, ->, instaceof, :: //llamar a constante o metodo estatico
+
+  Comparacion de objetos:
+   $a == $b //instacia de la misma clase y mismos atributos
+   $a === $b //son el mismo objeto, apuntan al mismo objeto
+
+  Constantes:
+   Una clase puede definir constantes
+   :: resolucion de ambito
+   Clase::CONSTANTE Se usa para acceder a constantes de una clase
+
+  Excepciones:
+   Exception, Error //Convierte en excp los errores
+
+   error_reporting   /etc/php/7.1/cli/php.ini
+
+//Ej cazar cualquier exc o error
+   try{
+      ...
+   }catch(Exception|Error $e){
+      echo $e->getMessage();
+      die(); //Opcional, si queremos finalizar la ejecucion
+   }
+
+
 DateTime:
 //Se pueden manipular con objetos o no. Siempre en UTC
  -Instancia
@@ -15,3 +41,4 @@ DateTime:
    $date->getTimestamp();
    //Cambiar zona horaria
    &date->setTimezone(new DateTimZone ('Europe/Madrid'))
+
