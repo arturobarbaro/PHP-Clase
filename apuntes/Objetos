@@ -21,7 +21,9 @@ OBJETOS EN PHP:
    Clase::CONSTANTE Se usa para acceder a constantes de una clase
 
   Excepciones:
-   Exception, Error //Convierte en excp los errores
+  - ErrorException, solo existe para convertir los errores no manejados en excp (Subclase de Exception)
+  - Exception, para lanzar exp propias
+  - Error, base de todos los errores de php //Convierte en excp los errores
 
    error_reporting   /etc/php/7.1/cli/php.ini
 
