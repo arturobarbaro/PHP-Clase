@@ -1,0 +1,31 @@
+BASES DE DATOS
+ Listas de bases de datos: sudo -u postgres psql -l
+ //Instalar en atom ide-php
+
+Primeros pasos:	
+ sudo -u postgres psql -d template1
+  create extension pgcrypto;
+  ctrl + d
+ sudo -u postgres createdb fa
+ sudo -u postgres createuser -P fa 
+ clave: fa
+ psql -U fa -h localhost -d fa
+  ctrol + d
+ psql -U fa -h localhost -d fa < fa.sql //inyectar sql
+ psql -U fa -h localhost -d fa
+  \d
+  ctl + d
+
+Clase PDO:
+ $con = new PDO('pgsql:host=localhost;dbname=fa', 'fa', 'fa'); //conexion
+ //Realizar una consulta:
+ $st = $con->query('SELECT * FROM generos'); //sentencia
+ $res = $st->fetchAll();
+ Metodos:
+   fetchAll(): Convierte la tabla en un array
+   fetch(): te devuelve la sig fila
+   fetchColumn(1): te devuelve la sig columna especificada
+ 
+
+ 
+
