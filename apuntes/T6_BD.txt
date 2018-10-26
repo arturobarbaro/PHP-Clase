@@ -25,7 +25,7 @@ Clase PDO:
    fetchAll(): Convierte la tabla en un array
    fetch(): te devuelve la sig fila
    fetchColumn(1): te devuelve la sig columna especificada
- 
+   rowCount(): numero de filas
 
  
 
