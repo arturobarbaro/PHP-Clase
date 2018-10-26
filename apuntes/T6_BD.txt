@@ -2,12 +2,12 @@ BASES DE DATOS
  Listas de bases de datos: sudo -u postgres psql -l
  //Instalar en atom ide-php
 
-Primeros pasos:	
+Primeros pasos:
  sudo -u postgres psql -d template1
   create extension pgcrypto;
   ctrl + d
  sudo -u postgres createdb fa
- sudo -u postgres createuser -P fa 
+ sudo -u postgres createuser -P fa
  clave: fa
  psql -U fa -h localhost -d fa
   ctrol + d
@@ -26,6 +26,4 @@ Clase PDO:
    fetch(): te devuelve la sig fila
    fetchColumn(1): te devuelve la sig columna especificada
    rowCount(): numero de filas
-
- 
-
+   exec(): para modificar datos
