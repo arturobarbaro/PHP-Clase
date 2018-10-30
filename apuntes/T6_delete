@@ -1,0 +1,5 @@
+$pdo ->beginTransaction(); Iniciar transaccion           
+                                                           
+ Borrar elementos
+ $stBorrar = $pdo -> prepare('DELETE FROM peliculas WHERE id = :id');
+ $stBorrar -> execute([':id' => $id]);
