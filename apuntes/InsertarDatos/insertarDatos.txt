@@ -1,0 +1,9 @@
+-FILTRAR LA ENTRADA
+	+VALIDACION
+	+SANEADO BÁSICO(TRIM)
+-ESCAPAR LA SALIDA
+
+Resuelve tres problemas:
+ - Trabajar con datos correctos.
+ - La BD acepta los datos
+ - XSS (Solucionable al escapar la salida)

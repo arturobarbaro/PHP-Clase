@@ -1,0 +1,6 @@
+Persistencia de datos PHP:
+-Bases de datos
+-Cookies: Se almacenan en el cliente. $_COOKIES
+-Sesiones: Se almacenan en servidor. $_SESSION
+ Cada cliente tiene almacenada una zona en el servidor. 
+ session_start() necesario en la primera linea del documento.
