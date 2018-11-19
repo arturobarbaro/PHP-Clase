@@ -1,0 +1,16 @@
+Librerias y paquetes. Reutilizar codigo.
+
+Interoperabilidad:
+ -Versionado semantico.
+ -Composer
+ -Autoloading de clases/interfaces/traits
+ -Recomendaciones del PHP-FIG.
+
+VERSIONADO SEMANTICO:
+    Niveles: commit->etiquetas->releases
+
+    semver.org/lang/es/
+    X.Y.Z (mator.menor.parche)
+    Incrementar el parche: Se ha corregido el fallo pero el porgrama realiza las mismas funciones.
+    Menor: Tiene nuevas funciones o realiza cambios que mantiene la compatibilidad con el anterior.
+    Mayor: Cambios que rompen la compatibilidad.
