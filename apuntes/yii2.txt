@@ -1,0 +1,7 @@
+hub clone proyecto
+proyecto.sh proyecto
+cd proyecto
+atom .
+ctrl + mayus + p 
+	save project
+	set up current project
