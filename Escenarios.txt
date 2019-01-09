@@ -1,0 +1,78 @@
+Un escenario define:
+- Atributos que se pueden asignar masivamente activos y seguros.
+- Reglas de validacion que se asignan.
+
+namespace app\models;
+
+class User extends \yii\db\ActiveRecord
+{
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTRO = 'registro';
+
+    //sobreescribimos el metodo. Devolveria ['default' => ['nombre', 'correo', 'password'],];
+    public function scenarios()
+    {
+        return [
+            'default' => ['todos',....],
+            self::SCENARIO_LOGIN => ['nombre', 'password'],
+            self::SCENARIO_REGISTRO => ['nombre', 'correo', 'password'],
+        ];
+    }
+}
+
+Los atributos activos deben aparecer en el escenario actual y en rules().
+
+//metodo yii\base\Model::rules() ademas de para validacion, y saneado interesante para los escenarios.
+// Es 'necesario' sobreescribirlo. Los atributos que estan en las reglas de validacion ya se consideran seguros
+class User extends \yii\db\ActiveRecord
+{ 
+  ....
+    public function rules()
+    {
+        return [
+            // nombre, correo, asunto y cuerpo son obligatorios:
+            [['nombre', 'correo', 'asunto', 'cuerpo'], 'required'],
+
+            // el correo debe ser una dirección de e-mail válida:
+            ['correo', 'email'],
+        ];
+    }
+}
+
+REGLAS ACTIVAS
+- Las reglas activas son aquellas reglas que se aplican al escenario activo.
+- Se aplican a todos los escenarios.
+- Podemos indicar que una regla sólo se aplique a un determinado escenario usando la opción on.
+
+ public function rules()
+    {
+        return [
+            [['edad'], 'numeric', 'on' => self::SCENARIO_A],
+
+        ];
+    }
+
+Podemos definir todo en rules:
+class User extends \yii\db\ActiveRecord
+{
+    ....
+    public function rules()
+    {
+        return [
+            [['nombre', 'correo', 'asunto', 'cuerpo'], 'required', 'on' => ['default', self::SCENARIO_A,],
+            [['edad'], 'numeric', 'on' => [self::SCENARIO_A,]],
+        ];
+    }
+}
+
+ATRIBUTOS INSEGUROS
+- ! delante de su nombre, en scenarios() o en rules().
+
+public function rules()
+{
+    return [
+        [['numero', 'codigo', '!created_at'], 'required'],
+    ];
+}
+
+

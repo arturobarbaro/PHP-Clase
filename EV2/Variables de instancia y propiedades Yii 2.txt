@@ -38,8 +38,15 @@ class ContactForm extends \yii\base\Model
     public $correo;
     public $asunto;
     public $cuerpo;
+    
+    public getTres(){
+        return 3;
+    }
+
+    //sobreescribe el metodo
+    public function attributes(){
+       return ['nombre', 'asunto', 'tres'];
+    }
 }
 
-public function attributes(){
-   return [];
-}
+
