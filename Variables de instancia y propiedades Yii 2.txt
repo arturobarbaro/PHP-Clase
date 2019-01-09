@@ -1,0 +1,52 @@
+# VARIABLE DE INSTANCIA 
+ - Se declara en el codigo fuente de la clase
+
+class Pepe
+{
+   public $hola;
+}
+
+$pepe = new Pepe();
+echo $pepe->hola;
+
+# PROPIEDADES 
+ - Son caracteristicas que tienen todos los componentes de una aplicacion Yii 2.
+
+ - En principio, todas las variables de instancia de una clase se pueden considerar propiedades de la clase.
+
+ - Ademas, se pueden declarar mediante getters y setters.
+
+class Pepe extends \yii\base\Component
+{
+    public $hola;
+    private $_adios;
+
+    public function getAdios(){
+         return $this->_adios;
+    }
+    
+    public function setAdios($adios){
+         $this->_adios = $adios;
+    }
+}
+
+
+# ATRIBUTOS
+class ContactForm extends \yii\base\Model
+{
+    public $nombre;
+    public $correo;
+    public $asunto;
+    public $cuerpo;
+    
+    public getTres(){
+        return 3;
+    }
+
+    //sobreescribe el metodo
+    public function attributes(){
+       return ['nombre', 'asunto', 'tres'];
+    }
+}
+
+
