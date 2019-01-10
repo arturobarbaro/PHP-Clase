@@ -1,5 +1,5 @@
 Un escenario define:
-- Atributos que se pueden asignar masivamente.
+- Atributos que se pueden asignar masivamente activos y seguros.
 - Reglas de validacion que se asignan.
 
 namespace app\models;
@@ -13,7 +13,7 @@ class User extends \yii\db\ActiveRecord
     public function scenarios()
     {
         return [
-            'default' => ['todos',....],
+            self::SCENARIO_DEFAULT => ['todos',....],
             self::SCENARIO_LOGIN => ['nombre', 'password'],
             self::SCENARIO_REGISTRO => ['nombre', 'correo', 'password'],
         ];
@@ -59,10 +59,20 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'correo', 'asunto', 'cuerpo'], 'required', 'on' => ['default', self::SCENARIO_A,],
+            [['nombre', 'correo', 'asunto', 'cuerpo'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_A,],
             [['edad'], 'numeric', 'on' => [self::SCENARIO_A,]],
         ];
     }
+}
+
+ATRIBUTOS INSEGUROS
+- ! delante de su nombre, en scenarios() o en rules().
+
+public function rules()
+{
+    return [
+        [['numero', 'codigo', '!created_at'], 'required'],
+    ];
 }
 
 
