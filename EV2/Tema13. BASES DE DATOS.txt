@@ -1,0 +1,9 @@
+Bases de datos:
+
+ActiveRecord  //Sin ordenes SQL. Con objetos
+-------------
+Query Builder //Codigo independiente de la base de datos *UTIL*
+-------------
+DAO
+-------------
+PDO
