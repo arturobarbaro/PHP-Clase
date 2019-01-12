@@ -7,3 +7,11 @@ Query Builder //Codigo independiente de la base de datos *UTIL*
 DAO
 -------------
 PDO
+
+Con QueryBuilder creas codigo sql independiente del sgbd -> sistema de base de datos.
+Ya que se encarga de adaptarlo al postgres, mysql,...
+Está por encima de DAO(db) y PDO.
+
+Active Record está por encima de QueryBuilder, es un ORM. Transforma las tablas en clases, las filas en objetas y columnas en attributos.
+Un Active Record es un tipo especial de modelo.
+Con AR podemos crear relaciones entre tablas, cada AR representa a una tabla.
