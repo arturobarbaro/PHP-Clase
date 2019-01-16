@@ -1,0 +1,51 @@
+--------------------- ACTIVE RECORDS ---------------------
+
+Active records es un tipo de modelo que se apoya en una tabla.
+$model->attributes -> te devuelve los atributos de un modelo.
+$model->scenarios() ->devuelve los escenarios del modelo.
+$model->isNewRecord ->Devuelve true si el modelo no existe en la bd. (Se ha instanciado, pero aun no se ha introducido.)
+$model->attributes = ['titulo' => 'el patio', 'anyo' => 1999];
+Asignación masiva de atributos.
+$model->validate() -> comprobamos si las reglas de validacion se cumplen
+$model->save() -> Esto hace un validate e inserta en la base de datos el modelo.
+
+app\models\Peliculas::findOne(1) -> devuelve una instancia en base al id, o null
+ si no encuentra nada.
+
+app\models\Peliculas::findAll([1,5]) ->devuelve dos instancias en un array segun id.
+app\models\Peliculas::findAll(['sinopsis' => null]) ->devuelve todas las instancias que cumplan la condicion.
+
+tanto findOne() como findAll() permiten un escalar(un numero), un array ([1,2]) y un array
+asociativo(['sinopsis' => null]). Con la diferencia de devolver One o All.
+
+Active record, crea a partir de una tabla una clase ->
+	De cada columna, crea un atributo.
+
+---------------- ActiveQuery --------------------------
+Consiste en usar el metodo ::find()
+
+$model = app\models\Peliculas::find() ->devuelve instancia de ActiveQuery
+$model->where(...)->all() -> 'Select * from peliculas where ...'; y lo trae todo.
+
+$model->asArray()->all() -> te devuelve lo mismo, pero no en forma de instancias, si no de array.
+$model->getDirtyAttributes() ->devuelve los atributos sucios, los que han sido cambiados y no se
+	ha hecho un save().
+$model->getOldAttributes() -> devuelve los atributos antiguos antes de ser cambiados.
+$model->getOldAttribute('attb') -> devuelve un atributo antiguo.
+
+Recordamos:
+El paso de tipos de sql a PHP
+null -> null
+bool -> bool
+int(smallint,bigint,...)  -> int (si cabe, si no cadena)
+el resto -> String
+numeric -> String
+
+Todas las clases que sean modelos, deben llevar el metodo static tableName()
+con return 'nombre_tabla' al que representa, sobre la que se apoya.
+ IMPORTANTE!!!!
+
+Entre modelos hay relaciones, por ejemplo Peliculas y Generos. La relación generos, te
+devuelve la instancia del genero de una determinada pelicula, devuelve una instancia de tipo Generos.
+Sin embargo la relación peliculas, devuelve un tipo Peliculas[], ya que un genero, puede pertenecer
+a varias peliculas.
