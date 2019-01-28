@@ -13,3 +13,5 @@ CREATE TABLE usuarios
 }
 
 --comentario, noticia, categoria
+
+usar listview(portada), detail..., grid....
