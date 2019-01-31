@@ -30,5 +30,11 @@ accion login() |
 
 user->isGuest: true si es inivitado (no logueado)
 user->login(): loguea al usuario
+user-> logout(): desloguea al usuario
+user->identity:
+Si esta logueado devuleve  una instacia, si no NULL
+user->identity->propiedad
+
 configurar user en "config/web.php" identifyClass
 Componente yii::$app->security 
+
