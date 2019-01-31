@@ -1,0 +1,34 @@
+LOGUEO
+-------------------------
+COMPONENTE DE APLICACION|
+Yii::$app->user         |
+yii\web\user            |
+------------------------					-----------------------------------------------
+	^							|Componente de aplicacion yii::$app->security |
+	|						|------>-----------------------------------------------
+	---------------------------------		|
+------------------------------------	|		|
+Modelo				    |	|		|2.3-validatePassword()
+app\models\Usuarios		    |---|----------------
+Subclase de active records	    |	|
+implementa yii\web\IdentifyInterface|	|
+-------------------------------------<--|---------------------
+					|		     |				
+	|----------------->[si valida] 3-login()             |2.1-getUser()
+	|                                                    |2.2-validatePassword()
+-------------------                                          |
+LoginForm	  |2-validate() comprueba que existe y la contraseña es correcta 
+subclase de Model |4-getUser() comprueba que el usuario existe
+-------------------
+	^
+	|1-login()
+	|
+----------------
+SiteController |0-load()
+accion login() |
+----------------
+
+user->isGuest: true si es inivitado (no logueado)
+user->login(): loguea al usuario
+configurar user en "config/web.php" identifyClass
+Componente yii::$app->security 
