@@ -17,3 +17,5 @@ CREATE TABLE usuarios
 usar listview(portada), detail..., grid....
 
 OBSERVAR KRAJEE
+
+c require --prefer-dist yiisoft/yii2-imagine 
