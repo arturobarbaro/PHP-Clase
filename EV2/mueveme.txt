@@ -2,7 +2,7 @@ hub clone
 cd mueveme
 make install
 db/create.sh
-db.load.sh /inyecta sql
+db/load.sh /inyecta sql
 
 
 CREATE TABLE usuarios
