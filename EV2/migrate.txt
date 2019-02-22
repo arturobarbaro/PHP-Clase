@@ -1,0 +1,12 @@
+MIGRATE
+./yii migrate/create usuarios_email_unico
+
+saveUp()
+{
+$this->execute('AlTER TABLE USUARIOS ADD UNIQUE(email)');
+}
+
+saveDown()
+{
+$this->execute('AlTER TABLE USUARIOS DROP constraint usuarios_email_key');
+}
