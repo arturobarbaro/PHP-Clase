@@ -23,14 +23,13 @@ public function behaviors()
 controlar usuarios
 public function actionIndex()
     {
-        $usuario_id = Yii::$app->user->identity->id;
-        $searchModel = new ReservasSearch();
-        $dataProvider = new ActiveDataProvider([
-            'query' => Reservas::find()->where(['usuario_id' => $usuario_id]),
-            'pagination' => [
-                'pageSize' => 1,
-            ],
-        ]);
+        $usuario_id = Yii::$app->user->identity->id; 
+       ... 
+	o en _form
+/*
+    <?= $form->field($model, 'usuario_id')->hiddenInput(['value' => Yii::$app->user->identity->id])->label(false) ?>
+
+*/
 
         return $this->render('index', [
             'searchModel' => $searchModel,
