@@ -1,0 +1,60 @@
+Apuntes examen:
+
+GridView con paginación, ordenacion y busquedas:
+
+use Yii;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+
+public function actionIndex()
+    {
+        $searchModel = new ActividadesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => Actividades::find()->count(),
+        ]);
+
+        $activeDataProvider = new ActiveDataProvider([
+            'query' => Actividades::find(),
+            'pagination' => [
+                'pageSize' => 5,
+            ],
+        ]);
+
+        $filas = Actividades::find()
+            ->orderBy('actividad')
+            ->limit($pagination->limit)
+            ->offset($pagination->offset)
+            ->all();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'pagination' => $pagination,
+            'dataProvider' => $activeDataProvider,
+            'filas' => $filas,
+        ]);
+    }
+
+en la vista:
+use yii\grid\GridView;
+use yii\grid\ActionColumn;
+use yii\helpers\Html;
+use yii\widgets\LinkPager;
+
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'actividad',
+            'gastocalorico',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>

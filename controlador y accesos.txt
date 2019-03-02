@@ -1,0 +1,39 @@
+public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'only' => ['index', 'update', 'delete', 'create'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+controlar usuarios
+public function actionIndex()
+    {
+        $usuario_id = Yii::$app->user->identity->id;
+        $searchModel = new ReservasSearch();
+        $dataProvider = new ActiveDataProvider([
+            'query' => Reservas::find()->where(['usuario_id' => $usuario_id]),
+            'pagination' => [
+                'pageSize' => 1,
+            ],
+        ]);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
