@@ -1,0 +1,13 @@
+https://github.com/arturobarbaro/pruebas/commit/2a2e637972daeb2f8e3e681309ef3e685e9d6e9a
+
+https://github.com/arturobarbaro/pruebas/commit/f8f0a603685be9702c14756297054fe315702dff
+
+https://github.com/ricpelo/mueveme/commit/3e268b3abcf257bb1fe5c079a270e5ef07316cb1
+
+https://github.com/ricpelo/mueveme/commit/a6cc244e092e4d93c2e9aecbc1c61e69ea03b225
+
+funcion date() php:
+http://php.net/manual/es/function.date.php
+
+operaciones con fechas php:
+https://www.anerbarrena.com/sumar-restar-fechas-php-5655/
