@@ -1,0 +1,10 @@
+proyecto.sh myfit
+hub create myfit
+copiar requisitos encima de guia (xls)
+make
+entrar en el enlace
+crear v1 v2 y v3
+make
+si
+
+waffle.io/arturodiamond/myfit
