@@ -8,3 +8,14 @@ make
 si
 
 waffle.io/arturodiamond/myfit
+
+MIGRACIONES EN PROD Y TEST
+./yii migrate
+test/bin/yii migrate
+
+USAR TRAVIS
+travis-ci.org/arturobarbaro/myfit
+
+CODECLIMATE
+añadir la extension al navegador que usemos
+nos logueamos en su pagina
