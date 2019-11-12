@@ -1,0 +1,1950 @@
+======= APUNTES SERVIDORES ========
+
+Desde local: git remote prune origin -> para eliminar las ramas remotas que ya no valen para nada.
+
+_PHP_:
+los metodos que empiezan por mb_... tienen en cuenta el multiByte. Las cadenas de string en php, son lastres de bytes.
+
+----------------
+COMPROBACIONES:
+-----------------
+		de tipos (isDigit(), is_numeric(),...)
+		de valores (ctype_alpha, ctype_...)
+----------------------
+CONVERSIONES DE TIPO:
+----------------------
+			(int) $x --> Casting de toda la vida
+			(float)
+			(string) $x --> Casting a cadena
+
+pero tb hay funciones como:
+
+- intval(..) --> Coge algo y devuelve su valor en entero
+- floatval(..) --> Coge el valor del argumento y lo convierte a float
+- strval(..) --> Convierte su argumento a cadena
+- boolval(..) --> same
+
+--------------------------------------------
+COMPARACIONES DE VALORES DE TIPOS DISTINTOS:
+--------------------------------------------
+
+con el == y el ===,<,>,<=, >= !=, !==, <=>(comparador nave espacial), x ?? y(funcion de null), operador ternario x?y:z, operador elvis x ?: 25
+
+Operador funcion de null:
+Es como un coallesce, va buscando nulls.
+
+
+Operador elvis:
+"hola" ?: 25, si lo primero evalua a true, lo devuelve (hola) si no, devuelve lo otro.
+
+-------------|
+x <=> y	     |
+	     |
+-1 --> x<y   |
+0  --> x==y  |
+1  --> x>y   |
+-------------|
+
+Mijitas de la conversion string-->bool
+" " --> false : 		(bool) "" = false
+"0" --> false			(bool) "0" = false
+"resto de cadena" --> true	(bool) "h" = true
+
+-----------
+CONSTANTES:
+-----------
+
+Para definir constantes:(2 maneras)
+
+-define('NOMBRE_CONSTANTE',74(valor));
+-const NOMBRE_CONSTANTE = 74 (valor);
+
+Hay algunas constantes ya definidas:
+__LINE__
+__FILE__
+__DIR__
+...
+
+Para saber si hay una constante definida: defined('NOMBRE');
+si da true, está definida, si no, false.
+
+
+--------------------------------
+ESTRUCTURAS DE CONTROL
+--------------------------------
+
+-if(...) else
+-switch(..)
+-for(..)
+-while(..)
+-do...while(..)
+((La palabra reservada elseif es mas correcto que usar else if{}..
+
+Otro modo del if:
+if (..):
+	...
+else:
+	....
+endif;
+
+
+
+
+=============================================================================
+
+INCLUSION DE SCRIPTS
+
+Se pueden incluir contenido php (aux.php) en otros archivos php.
+
+Con:
+
+require 'aux.php'; --> Esto desde f1.php, cuando llega al require, se va a aux.php y ejecuta ese codigo, luego sigue por el require hacia abajo.
+
+En el require hay que poner el nombre del fichero junto con su extensión. El require busca el archivo en primer lugar en 'include_path'(cuando no especificas la ruta completa), luego en el directorio actual.
+Por lo que es aconsejable y la mejor opcion es poner una ruta relativa al menos, si no una ruta absoluta.
+
+require './aux.php'; --> Ruta relativa indicando que esta en nuestro directorio actual, así se ahorra de ir al include_path.
+
+También podriamos usar una constante definida.
+require __DIR__ . '/aux.php';
+
+Tambien podemos usar include 'aux.php'; que funciona igual pero el require te para el programa si no encuentra el archivo, y el include si no te lo encuentra, te muestra un warning pero continua el programa.
+
+Tambien existe, require_once, include_once, que comprueba si ha habido un require previo a ese archivo, y se lo salta si lo ha ejecutado ya. Es decir, lo incluye si no ha sido incluido ya en la ejecución.
+
+_______
+RETURN
+
+
+El return al final del codigo de un archivo php (por ejemplo aux.php).
+
+aux.php =
+<?php
+
+echo 'Esto no lo va a mostrar'
+
+return 'Esto lo muestra';
+
+Luego podemos guardar este return en otro archivo php.
+Por ejemplo.
+
+pagina.php =
+<?php
+
+$res = require './aux.php';
+
+echo "Voy a mostrar lo que muestra aux.php: $res";
+
+
+--------------------------------
+FUNCIONES isset() y empty()
+--------------------------------
+
+isset() --> Determina si una variable esta definida y no es null. Retorna un boolean.
+
+empty() --> Determina si una variable está vacia o su valor evalua a false.
+
+
+------------------------
+	ARRAYS
+------------------------
+
+$argv --> Todos los argumentos de un archivo php (al ejecutarse)
+
+$argc --> El numero de argumentos que has pasado.
+
+
+Cómo se crea un array:
+
+$a = array(23,47,35); --> $a[0] = 23; $a[1] = 47; $a[2] = 35;
+
+ó
+
+$a = [23,47,35];
+
+
+$a[3]; !ERROR! PORQUE NO ESTA DEFINIDO, OCUPA DE LA 0 A LA 2
+
+Pero lo puedo meter asi:
+
+$a[3] = 99;
+
+Esto incrementa el array. ahora tendria 4 posiciones 0-3
+
+$a[4] = 'hola'; no tienen porque ser del mismo tipo.
+
+$a; --> [23,47,35,99,'hola',] asi lo tendriamos el array.
+
+$[14] = 55; se le puede meter en la clave 14 el valor 55, las demas posiciones sin definir, no existirían. Se van añadiendo por el final, no se ordenan las claves.
+Una clave no tiene porque ser numerica, puede ser un string
+
+$a['gato'] = 'cat';
+
+
+$a[] = 435; Coge la última(mayor) clave y es la que se le aplica a 435.
+
+
+		OPERADORES DE ARRAY
+
+
+Podemo sumar arrays (union de dos arrays).
+El array de la izquierda, añadiendole los del array de la derecha.
+Si hay claves iguales, gana el de la izquierda.
+
+$a = [0=>'a', 1=>'b', 2=>'c'];
+$b = [3=>d, 4=>e, 5=>f];
+
+$a + $b ; --> [a,b,c,d,e,f]
+
+$c = [2=>d, 3=>e, 4=>f]
+
+$a + $c ; --> [a,b,c,e,f] --> se pisa la clave 2 y gana la del array $a.
+
+
+¿Cuándo dos arrays son iguales?
+
+Son iguales si tienen los mismos elementos, las mismas parejas clave-valor.
+
+
+Y son identicos cuando cuando los valores se evaluan y son iguales.
+
+
+!= y !== tb se usan.
+
+
+
+---------------------------------------------------------------
+			FUNCIONES DE ARRAY.
+---------------------------------------------------------------
+
+count($a) --> Cuantos elementos tiene un array.
+array_sum(...) -->Suma los elementos de un array.
+range(0,4) --> Crea un array de los numeros del 0 al 4.
+sort($a) --> Ordena por valores el array, devuelve true si lo ha ordenado. elimina las claves.
+rsort($a) -->Ordena al reves.
+asort($a) --> Ordena por valores pero mantiene las claves, no las pierdes.
+arsort($a) --> Ordena por valores al reves y manteniendo las claves.
+ksort($a) --> Ordena por claves, y no elimina las claves
+krsor($a) --> Ordena al reves por claves.
+
+array_keys($a) --> Devuelve un array solo con las claves.
+array_values($a) --> Devuelve un array con los valores.
+
+array_combine(array_keys($a), array_values($a)) --> Combina dos arrays en uno, hay que pasarle como primer parametro un array de claves y luego otro de valores.
+
+
+
+array_merge($a) --> sirve para combinar dos arrays. Se modifican las claves de uno de los arrays, y se añaden al final del otro, siguiendo la secuencia numérica de claves de este segundo.
+
+Traversable --> Algo que puedes recorrer.
+
+
+$a = ['perro' => 'dog', 'gato'  => 'cat'];
+
+
+foreach ($a as $k => $v){	--> Si solo te interesa los valores $v o $k
+	echo "La palabra $k en ingles es $v.\n";
+}
+
+
+---------------------------------
+	FUNCIONES
+--------------------------------
+function suma($a, $b=5){return $a+$b;}
+
+si se usa suma(3,4), sale 7, pero si se le pasa solo un valor, el segundo argumento tomará su valor por defecto que en este caso es 5·
+
+Los valores por defecto debemos indicarlos como ultimos parametros. Por ejemplo $b=5 está detras del $a, no podría ir delante.
+
+
+
+ÁMBITOS-->
+	'GLOBAL': Las variables que estan definidas a nivel de fichero.Y solo se puede usar a nivel de fichero.
+
+	'LOCAL': Aquella que se define dentro de una función.
+
+	'SUPERGLOBALS': sirven para cualquier ambito, pero ya estan definidas, no se pueden definir nuevas.($_GET,$_POST,_$SESSION,$_COOKIE,..)
+
+
+Si tenemos una varible global y la queremos usar dentro de una función, deberemos usar:
+
+function(){
+global $variable;
+...y usarla...
+}
+
+
+Se pueden declarar los tipos de argumentos que pasamos a una función, pero solo pueden ser: int, float, bool, string. Y esto si se le pasa algo que no es del mismo tipo, el interprete se encarga de hacer un conversión implícita.
+Al igual que podemos indicar el tipo que retorna una función.
+
+function suma(int $a, int $b):int
+{return $a+$b;}
+
+
+NULLABLE --> hacer un tipo nullable es ponerle ? delante del tipo, ?int --> Permite valores entero y el null.
+
+
+
+TIPADO ESTRICTO --> No se define en la misma función, si no que se debe indicar en el archivo donde se llama a la función. La unica excepción es cuando el parametro espera un float y se le pasa un int, SI lo acepta. Es la única excepción.
+
+
+En el fichero--> Arriba del todo:
+
+declare(strict_types=1);
+
+
+==========================================0
+ORIENTACIÓN A OBJETOS
+
+Las variables guardan referencias a un objeto.
+$a = OBJETO;
+$b = $a; --> b apunta al mismo objeto que a.
+$a = OBJETO1; --> a apunta a un nuevo objeto, pero b sigue apuntando al anterior.
+
+Para acceder a las propiedades y métodos publicos de un objeto usamos ->
+$a -> nombre = "Jose";
+$b -> saluda();
+machacamos la propiedad nombre del objeto.
+
+$a = OBJETO;
+$b = &$a; //A b se le asigna por referencia a. b apunta al mimso objeto que a.
+$a = OBJETO1; //b tb apunta al nuevo objeto.
+
+$a = OBJETO;
+$b = clone $a; -->b apunta a una copia de OBJETO(copia superficial, no profunda) si el OBJETO tuviese objetos como propiedades
+				estos no se clonarian, si no que las propiedades objetos de la copia apuntarian a las propiedades objetos del OBJETO
+
+Un objeto es == a otro cuando instancian a la misma clase y cuando sus propiedades tienen los mismos VALORES
+Un objeto es === a otro cuando son el mismo objeto.
+
+Podemos usar las constantes de las clases, con el nombre de la clase seguido de la resolución de ámbito (::)
+DateTime::ATOM; Llamamos a la constante ATOM de DateTime.
+
+
+------------------ CLASE DATETIME ----------------
+$a = new DateTime;
+$a->setTimezone(new DateTimeZone('Europe/Madrid')); --> esto te cambia de UTC, al horario de madrid
+
+-------------------- EXCEPCIONES ----------------------
+Instancia de la clase Exception o de la clase Error.
+-ErrorException, solo existe para convertir los errores no manejados en excp (Subclase de Exception)
+-Exception, para lanzar excepciones propias
+-Error, base de todos los errores de php //Convierte en excep los errores.
+
+el archivo erro_reporting se encuentra en /etc/php/7.1/cli/php.ini
+
+Para cazar cualquier exc o error
+try{
+	...
+} catch(Exception|Error $e){
+	echo $e->getMessage();
+	die();
+}
+
+----------------- POSTGRES -----------------------
+Para instalar postgresql:
+desde .conf/scripts
+ejecutamos ./postgresql-install.sh
+
+para ver todas las bases de datos:
+sudo -u postgresql psql -l
+
+
+----------- COMENZAMOS NUESTRO FILMAFFINITY -------
+Vamos a crear una base de datos que contengan las peliculas:
+
+peliculas(_id,titulo,anyo,sinopsis,duracion,genero_id(claveAjena))
+generos(id,genero)
+
+Para entrar en la base de datos template1 -> sudo -u postgres psql -d template1
+Vamos a modificar template1:
+create extension pgcrypto; -->creamos esta extensión
+
+HACER SIEMPRE, PARA QUE FUNCIONE
+
+creamos una base de datos(nombre fa): sudo -u postgres createdb fa (fa->filmaffinity)
+creamos un usuario (nombre fa): sudo -u postgres createuser -P fa (-P para que te pida la contraseña y generarla)
+
+psql -U fa -h localhost -d fa -> para entrar en la base de datos fa (-d) con el usuario fa (-U) en mi maquina (-h localhost)
+
+psql -U fa -h localhost -d fa < fa.sql : inyecta el archivo fa.sql y lo ejecuta dentro de la base de datos fa con usuario fa.
+
+Desde psysh -> vamos a conectarnos a la base de datos ya creada.
+Debemos instanciar a la clase PDO.
+$pdo (o $con ) = new PDO('pgsql:host=localhost;dbname=fa'(tipo de base de datos, host nuestro y base de datos a la que nos conectamos),'fa'(usuario),'fa'(contraseña))
+
+Ya tenemos la instancia, podemos trabajar con ella, vamos a hacer un SELECT
+$sentencia = $pdo->query('SELECT * from generos;') //devuelve una sentencia, que la guardamos
+$res = $sentencia->fetchAll(); //guardo en res, el array que saca el fetchAll() de la sentencia
+$res[0][0] = 1; //consulto en el array res, el primero, que a su vez es un array, llamo a la posicion 0
+$res[0]['id'] = 1 //id es la primera posicion, de la primera posicion de $res;
+ //Se puede llamar por el indice (numero) o por el nombre de la columna ('id');
+ query(...) --> te ejecuta una sentencia (select) y te devuelve el resultado de la sentencia;
+ fetchAll() --> Te devuelve todas las filas.
+ fetch() --> te devuelve la siguiente fila, tiene un contador interno, que sabe que fila te ha dado.
+ 			si te da false, es que ya no hay mas filas que mostrar.
+fetchColumn() --> devuelve columna a columna, de una fila, y va pasando de fila
+				por lo que solo se puede coger una columna de cada fila.
+rowCount()--> el numero de filas.
+
+$pdo->exec(operaciones que no provoquen resultados, insert,update)-> devuelve el nº de filas afectadas.
+$pdo->prepare(); //Aqui dentro usamos marcadores ':'
+$pdo->execute([:marcador => valor]);
+
+dentro de la base de datos:
+\d -> te dice las bases de datos que hay
+
+
+	TIPOS SQL --------- TIPOS PHP
+	nº Entero ----------- entero
+	null ---------------- null
+	bool ---------------- bool
+	el resto ------------ cadenas
+
+
+
+
+//INTRODUCIR TEMARIO DE TRANSACCIONES **TAREA**
+Las transacciones ofrecen Atomicidad, Consistencia, aislamiento y durabilidad. En resumen, hace que un trabajo llevado
+a cabo sobre una base de datos, sea aplicado de forma segura y sin interferencias de otras conexiones.
+Una transaccion se implementa para hacer que el lote de cambios se aplique a la vez.
+Para empezar una transaccion:
+PDO::beginTransaction();
+para finalizarla:
+PDO::commit();
+PDO::rollback();
+
+
+--------------- FILTRADO ------------------
+Validación --> solo podemos decir si es valido o no el valor.
+Saneado --> podemos también modificar el dato durante el saneado.
+
+Lo que debemos tener en cuenta es:
+- Filtrar la entrada: Validación y saneado básico(trim)
+
+- Escapar la salida:
+
+Resolvería tres problemas:
+	- La b.d. acepte los datos al insertar/modificar.
+	- Trabajar con datos correctos.
+	- Resuelve el Cross-Site Scripting (Escapando la salida).
+
+
+-------------- SESIONES ----------------------------
+PHPSESSID --> Identificador de sesion.
+$_SESSION --> Array que contiene las variables de sesion.
+El servidor en cuestión almacena una sesion para cada usuario que la visita, y le dice al usuario que guarde
+un PHPSESSID, para saber a qué usuario pertenece la sesión que guarda. Para que en un futuro cuando el mismo
+usuario quiera entrar, se quede guardado la lista de favoritos, el carrito,...
+
+Para crear una sesion o continuar(si ya estaba creada) --> session_start();
+
+
+------------- ESPACIOS DE NOMBRES -------------
+namespaces;
+
+Nombre totalmente cualificado --> namespace\NombreClase;
+
+Para diferenciar otras clases con mismo nombre, pero en otro espacio diferente.
+
+Las 5 'cosas' que se ven afectadas por los espacios de nombres son:
+	-Clase
+	-Interfaz
+	-Rasgo
+	-Constante
+	-Funcion
+
+----------- 8) INTEROPERABILIDAD-------------------------
+
+	- Versionado semántico
+	- Composer
+	- Autoloading de clases / interfaces / traits
+	- Recomendaciones del PHP-FIG (Estándares)
+
+
+	- VERSIONADO SEMÁNTICO:
+
+		A la hora de enumerar nuestras versiones, no se hace de cualquier manera, si no hay que seguir una serie de
+ 	recomendaciones, normas o estándares.
+ 	Podemos ir haciendo versiones de nuestros programas en GitHub con el etiquetado (tag), poniendo v1.0.0, o
+	con los releases que ofrecen mas información que los tags.
+
+	El versionado semantico es la manera en como hay que indicar las versiones, para que todo programador sepa
+	interpretar un numero de versión.
+
+	SIEMPRE serán tres numeros -> X,Y,Z (numero mayor, numero menor y parche)
+		- Cuando se corrige un fallo y el programa sigue funcionando igual, se incrementa el parche (Z)
+		- Todo cambio que haga que el programa funcione diferente, pero no lo haga incompatible con la version anterior,
+		 hace aumentar el numero menor (Y). Cuando se aumenta el menor, el parche pasa a valer 0.
+		- Los cambios que si rompen la compatibilidad, hace incremetar el numero mayor (X). Mi programa deja de funcionar
+		 con esa libreria de la que depende y ha hecho esta nueva versión.
+
+		 API -> Es el punto de conexión entre mi código y la librería que estoy usando.
+
+		 como saber que versiones van antes o despues:
+		 v1.0.0-alpha < v1.0.0-alpha.1 < v1.0.0-beta < v1.0.0-beta2 < v1.0.0-rc1 < v1.0.0
+		 rc -> release candidate (está apuntito de salir la versión)
+
+
+	- COMPOSER (Sistema de gestión de dependencias):
+
+		Debemos instalar composer.
+		Desde .conf/
+		Actualizamos .conf/, dentro de scripts, instalar composer-install.sh y luego composer-postinstall.sh.
+
+	-----PARA INCLUIR UNA LIBRERIA ---- composer require 'dependencia';
+		Esto incluye la version de producción, si queremos la versión en desarrollo, debemos indicar --dev al final.
+
+		Aunque composer install, instala las dependencias en desarrollo por defecto, si queremos las de produccion
+		debemos poner --no-dev.
+
+		O tambien podremos incluir la dependencia en el archivo composer.json y luego ejecutar composer install.
+		O con composer update, actualiza los paquetes compatibles con las versiones y modifica lock para que quede
+		 constancia.
+
+
+		El composer trabaja a nivel de proyecto en local.
+		Al ejecutar el composer con alguna libreria, se te crea la carpeta vendor que es donde incluye todo el codigo
+		de las dependencias de mi libreria, el composer.lock y composer.json.
+
+	CARPETA VENDOR:
+		La carpeta vendor, no se puede pushear a git ya que es composer es el que se la trae.
+		 Por lo que la debemos incluir en el .gitignore.
+		Si eliminamos la carpeta vendor, con un composer install, la vuelve a traer
+
+	COMPOSER.JSON:
+		Incluye la dependencia que indiquemos, esto lo indicamos con el composer require 'dependencia'
+		Archivo esencial!! Ya que indica la dependencia que necesita nuestro programa para funcionar.
+		Nos indica tb la versión que debe tener la dependencia para que nuestro programa funcione. (Restricción de versiones)
+
+	COMPOSER.LOCK:
+		Se genera automaticamente.
+		El composer.lock es la que dice que versión de nuestra dependencia se está instalando, y la bloquea.
+		Así podras usar las mismas versiones de los paquetes. Aunque salgan versiones nuevas, no se actualizará,
+		hasta que tu lo permitas. Así evitaremos problemas de compatibilidad.
+
+	a) El composer.lock en un principio no existe, al ejecutar el composer install, mira en el composer.json, las dependencias
+	que necesita y las versiones de estas que necesita y se las trae, es aquí cuando se crea el composer.lock y se indica
+	la versión que se ha instalado.
+
+	b) Si ya existe el composer.lock, y se ejecuta el composer install, compara los dos archivos y mira en el json las dependencias
+	si todos los paquetes especificados aparecen tb en el lock, y se instalarán los que no estan en el lock estando en el json (pq los
+	hemos incluido mas tarde)
+
+	------------Restricciones sobre las versiones:--------
+	*En composer.json:
+
+	"symfony/console": "4.3.1" 	-> esto indica que quieres esa versión, y solo esa de la dependencia.
+	"symfony/console": "4.3" 	-> esto indica que quiere la versión 4.3.0.
+	"symfony/console": "4" 		-> esto indica que quiere la versión 4.0.0.
+	"symfony/console": ">=4.2.1 < 4.3.0"-> esto indica que quiere la versión 4.2.X cualquier parche
+	"symfony/console": ">=4.2.1 < 4.3.0 || 4.5.2"-> esto indica que quiere la versión 4.2.X cualquier parche ó 4.5.2
+	"symfony/console": "1.0 - 2.0 "-> esto indica que quiere la versión >= 1.0.0 < 2.1 en ese rango, con - te permite coger 2.0.2
+	"symfony/console": "1.0.0 - 2.1.0 "-> esto indica que quiere la versión >= 1.0.0 <= 2.1.0 en ese rango
+	"symfony/console": "1.4.* "		-> esto indica que quiere la versión 1.4.X cualquier parche
+	"symfony/console": "~4.3.1 "	-> version minima con la que tu programa funciona bien, permitimos el aumento del parche(1), de los demas no
+	"symfony/console": "~4.3 "		-> version minima con la que tu programa funciona bien, permitimos el aumento del menor(3), de los demas no
+	"symfony/console": "~4 "	-> version minima con la que tu programa funciona bien, NO permitimos el aumento del ultimo numero
+
+	LA VIRGUILILLA y GORRITO, NO PERMITE CAMBIOS EN MAYOR, PORQUE GENERARIAN PROBLEMAS DE COMPATIBILIDAD
+
+	"symfony/console": "^4.3.1 "	-> version minima con la que tu programa funciona bien, permitimos el aumento de parche(1) y menor (3)
+	"symfony/console": "^4.3 "		-> version minima con la que tu programa funciona bien, permitimos el aumento del menor(3) el parche tb
+
+	La 'estabilidad mínima' quiere decir que el composer por defecto se descarga los ultimos paquetes estables. Y no los
+	que estan en desarrollo.
+	Esto lo podriamos modificar en el composer.json, poniendo arriba:
+
+	"minimun-stability": "dev",
+
+	Le podemos meter -> stable, dev, alpha, beta, RC.
+
+	La restricción "@dev" hace que en ese paquete particular, te descargues la ultima versión de desarrollo.
+
+	semver.mwl.be --> pagina donde podemos practicar el tema de las restricciones de versiones
+
+
+--------------------------AUTOLOADING -------------------------------
+
+	Permite incluir las clases cuando sea requerida.
+	Composer tiene un require especial -> require '/vendor/autoload.php';
+	Y esto hace que cada vez que sea requerida una clase, se implementa sola.
+	El autoloading carga, clases, interfaces y rasgos.
+
+
+
+
+
+
+
+
+
+
+
+---------------------- YII ------------------------
+Transparencias --> dwese.iesdonana.org/slides/introduccion-a-yii2.html#
+
+Framework--> proporciona funcionalidades genércias que el programador puede cambiar
+selectivamente, escribiendo código específico para una app específica.
+Se puede considerar como una app genérica incompleta en la cual el usuario
+puede hacer uso de ella para crear una app en particular.
+Ejemplos de framework web para php:
+	- Symfony
+	- Laravel
+	- CakePHP
+	- CodeIgniter
+	- Yii
+
+Microframework--> se refiere a un framework web minimalista, carece de muchas
+funcionalidades que posee un framework web completo (full-stack)
+
+Libreria vs Framework --> Los framework tiene 3 caract, que las diferencia de las
+librerias:
+	- Inversión del control: el flujo de control del programa viene dictado por
+	el framework y no por el programa.
+	- Extensibilidad: puede sobreescribir código para realizar funcionalidades
+	específicas.
+	-No modificable: El codigo del framework no se puede modificar, se puede ampliar,
+	por eso es extesible, pero no modificar su codigo.
+
+La principal diferencia:
+	- Con librerias: El código llama a la libreria por lo que el control lo
+	tiene el código.
+	- Con framework: El framework llama al código po lo que el control lo
+	tiene el framework.
+
+
+Página de yii --> www.yiiframework.com : lo visitaremos bastante por aquello de la guia
+	y de la API.
+
+El framework de yii no es mas que un paquete de composer.
+
+---------------- AYUDA --------------------------
+el comando -> hub create 'nombre'
+crea un repositorio remoto y lo enlace con el repositorio local en el que estas.
+Deberia pushear la rama al remoto -> git push -u origin master
+-------------------------------------------------
+
+La primera vez que entramos en un proyecto de yii
+Debemos indicar al atom que es un proyecto, para ello:
+Ctrl+Mayus+P -> buscamos save project, y pulsamos save.
+Ctrl+Mayus+P -> buscamos Serenata set up current.
+Ctrl+Mayus+P -> PHP ide serenata, tb lo ejecutamos.
+
+Para ejecutar un proyecto yii-> .yii/ serve
+
+
+-------------- MODELO VISTA-CONTROLADOR--------------
+ Separar en 3 'capas' :
+ 	-controlador --> se encarga de gestionar la Web request
+ 	-modelo --> Gestiona los datos dentro de la aplicacion. Tb se encarga de las
+	validaciones, metodos,... de los datos(CRUD).(Ej: Peliculas,Usuarios,...)
+	-vista --> Es la que se encarga de la interfaz, es decir, lo que se ve por pantalla...
+	Los formularios para recuperar datos, mostrar una lista de peliculas por ejemplo..
+
+---------------------------------------------------------------
+Mapeador Objeto-Relacional (ORM):
+	Se encarga de hacer la correspondencia entre la base de datos (tablas) y
+	las clases y/o objetos de los modelos.
+	Convierte las tablas en clases, las filas en objetos y las columnas en atributos.
+	En yii2 tenemos ActiveRecords como ORM.
+-------------------------------------------------------------
+Para acceder al generador automático -> index.php?r=gii
+
+Cambiamos los datos de la base de datos para que no nos de error:
+en la carpeta config, el archivo db.php, debemos cambiar el $dbname, $username y $password
+
+------- PARA COMENZAR UN PROYECTO YII2 ---------
+Para crear un proyecto nuevo con la estructura de la plantilla básica:
+ $ composer create-project yiisoft/yii2-app-basic directorio
+
+Creará un directorio llamado directorio donde se volcará el contenido de la plantilla y quedará
+el proyecto listo para empezar su desarrollo.
+
+
+----------------- MODELOS ------------------
+Partes de la arquitectura MVC.
+Son objetos que representan datos, reglas y lógica de negocio.
+Se crean heredando de yii\base\Model
+Esto proporciona muchas características útiles:
+	-Atributos -> solo los modelos poseen atributos.
+	-Etiquetas de atributos
+	-Asignación masiva
+	-Reglas de validación
+	-Exportación de datos
+
+----------------------- DIFERENCIA (Variable instancia, Propiedad) ------------------------
++ Variable de instancia
+	Se declara en el ćodigo fuente de la clase:
+
+class Pepe
+{
+	public $hola;
+}
+
+$pepe = new Pepe();
+echo $pepe->hola;
+
++ Propiedades:
+	Son características que tienen todos los componentes de una aplicación Yii2
+	En principio, todas las variables de instancia públicas de una clase se pueden considerar
+	propiedades de la clase.
+	Además, se pueden declarar otras propiedades mediante getters y setters:
+
+class Pepe extends \yii\base\Component
+{
+	public $hola;
+	private $_adios;
+	public function getAdios()
+	{
+		return $this->_adios;
+	}
+
+	public fuction setAdios($adios)
+	{
+		this->_adios = $adios;
+	}
+}
+---------------- ATRIBUTOS ------------
+	Los modelos representan los datos de negocio en forma de atributos.
+	Cada attb es como una propiedad públicamente accesible de un modelo.
+	atributes()->Define los atributos del modelo dependiendo de las variables de instancia.
+	Que incluirá todos los atributos del modelo.
+
+----------------- DEFINICIÓN DE ATRIBUTOS ---------------
+De entrada, si la clase modelo hereda directamente de yii\base\Model esta contendrá
+todas sus variables no estáticas como atributos.
+
+Se puede sobreescribir el método attributes() de yii\base\Model.
+
+	public function attributes()
+	{
+		return['var1','var2']; -> Aqui incluyo las variables de instancia de la clase
+								que quiero que sean atributos en el modelo.
+
+	}
+
+-------------- ESCENARIOS ----------------
+Un modelo se puede usar en diferentes escenarios.
+Ej: Un modelo de User, para recoger los datos en login y tb para registrar un nuevo User.
+
+En escenarios diferentes, un modelo puede tener reglas y lógica de negocio diferente.
+
+Ej: el attb correo, puede ser obligatorio para registrar pero no para logear.
+
+Cada escenario define qué attb se pueden asignar masivamente y qué reglas de validación se aplican:
+	-La asignación masiva permite asignar valores a varios attb al mismo tiempo en una sola operacion.
+	-Las reglas de validación determinan si los atributos de un modelo son válidos, osea, si cumplen
+	determinadas condiciones.
+
+	Ej:
+	class User extends \yii\db\ActiveRecord
+	{
+		const SCENARIO_LOGIN = 'login';
+		const SCENARIO_REGISTRO = 'registro';
+
+		//sobreescribimos el metodo. Devolveria ['default' => ['nombre', 'correo', 'password'],];
+		public function scenarios()
+		{
+			return [
+				self::SCENARIO_DEFAULT => ['todos',...],
+				self::SCENARIO_LOGIN => ['nombre','password'],
+				selft::SCENARIO_REGISTRO => ['nombre','correo','password'],
+			];
+		}
+	}
+
+Los atributos activos deben aparecer en el escenario actual y en rules().
+	Estos se pueden asignar masivamente.
+
+//metodo yii\base\Model::rules() ademas de para validacion, y saneado interesante para los escenarios.
+//Es 'necesario' sobreescribirlo. Los atributos que estan en las reglas de validacion ya se consideran seguros.
+
+class User extens \yii\db\ActiveRecord
+{
+	...
+
+	public function rules()
+	{
+		return [
+			//nombre, correo, asunto y cuerpo son obligatorios.
+			[['nombre','correo','asunto','cuerpo'], 'required'],
+
+			//el crreo debe ser una direccion de e-mail válida:
+			['correo','email'],
+		];
+	}
+}
+
+----------- REGLAS ACTIVAS -----------
+	- Las reglas activas son aquellas reglas que se aplican al escenario activo.
+	- Se aplica a todos los escenarios.
+	- Podemos indicar que una regla sólo se aplique a un determinado escenario usando la opción on.
+
+	public function rules()
+	{
+		return [
+			[['edad'], 'numeric', 'on' => self::SCENARIO_A],
+		];
+	}
+
+Podemos definir todo el rules:
+
+class User extens \yii\db\ActiveRecord
+{
+	...
+	public function rules()
+	{
+		return[
+			[['nombre','correo','asunto','cuerpo'],'required','on' => [self::SCENARIO_DEFAULT, selft::SCENARIO_A,],
+			['edad'], 'numeric', 'on' => [self::SCENARIO_A,]],
+		];
+	}
+}
+
+--------- ATRIBUTOS INSEGUROS -------
+- ! delante de su nombre, en scenarios() o en rules()
+
+public function rules()
+{
+	return [
+		[['numero','codigo','!created_at'], 'required'],
+	]
+}
+
+---------------------- URL -------------------------
+urlManager -> Se encarga de dos procesos.
+	- Encaminamiento -> A partir de una URL obtiene una ruta. (routing, parseRequest())
+	- Creacion de url -> A partir de una ruta, obtiene una URL. (createURL())
+
+Ej:
+/index.php?r=usuarios/update&id=2 (URL completa) /index.php (URL)
+
+['usuarios/update','id'=>2] (ruta)->array que contiene controlador/accion
+
+URL + Ruta = URL completa
+
+En YII2:
+	web.php (archivo)
+
+	'urlManager' =>[
+		'enablePrettyUrl' => true, //Que se vea bonito o no
+		'showScriptName' => false, //Para que aparezca index.php o no
+		'rules' => [
+			'listageneros' => 'generos/index', //esta regla define, si escriben listageneros, te lleva a generos/index
+			'generos/update/<id:\d+>' => 'generos/update' => ponemos < > porque hemos puesto una expresion regular,
+															e indicamos id: para indicar que el \d (numero) es el id
+			Siempre es igual: la parte modificable está dividida en dos por ':', antes está el parametro, y luego la
+			expresión regular que tiene que cuadrar para que se produzca el enrotamiento.
+		],
+	]
+	'defaultRoute' => 'generos/index', //No es configuración de URLmanager es del propio programa.
+									Esto hace que tu ruta por defecto sea la indicada.
+
+	'catchAll' => ['site/index'], //Para mantenimiento por ejemplo, ponga la rutas que ponga o clickes donde clikes, siempre te va a mostrar site/index
+
+
+--------------------- CREATING URLs ---------------------
+	Url::to(['']); -->Representa la ruta actual.
+	Url::home(); // /index.php?r=site%2Findex
+	Url::to(['generos/update'], true) -> te genera url abosluta
+
+------------------ REQUEST -> PETICIONES(POR ENCIMA)----------------
+Las peticiones que se hacen a una aplicación se representan como objeto de la clase Request.
+Podemos acceder a las peticiones a través de un componente request. Para obtener parametros,
+podemos usar get() o post(), metodos del componente request.
+
+Ej:
+$request = Yii::$app->request;
+$get = $request->get(); ->Devuelve todo el array get.
+$get = $request->get('id'); ->equivale a $id = isset($_GET['id']) ? $_GET['id'] : null;
+$get = $request->get('id',1); ->lo mismo que arriba pero no devuelve null si no lo hay, si no 1.
+$params = $request->bodyParams; ->Devuelve todos los parametros que van en el cuerpo de la peticion.
+								equivale a ->post(), ya que en un post, los parametros van en el cuerpo.
+$queryParams = $request->getQueryParam()->Devuelve todos los parametros pasados por la url, como ->get().
+
+Algunos Metodos ->
+$request->isAjax
+$request->isGet
+$request->isPost
+$request->isPut
+Devuelven true o false si la peticion es Ajax o no, Get o no,...
+
+Para saber si se ha mandado un cabecera o no:
+$headers = Yii::$app->request->headers;
+
+// devuelve el valor Accept de la cabecera
+$accept = $headers->get('Accept');
+
+if ($headers->has('User-Agent')) { // la cabecera contiene un User-Agent o no }
+
+-------------------- RESPONSE -------------------
+
+Código de estado -> Yii::$app->response->statusCode = 200; Aqui se puede cambiar el valor por defecto.
+
+Lanzar una excepción:
+throw new \yii\web\NotFoundHttpException;
+
+Existen muchos tipos...BadRequestHttpException, ConflictHttpExce...,ForbiddenHttpEx...,...
+
+
+Para ver las cabeceras en las respuestas:
+$headers = Yii::$app->response->headers;
+
+// añade una cabecera Pragma. Las cabeceras Pragma existentes NO se sobrescribirán.
+$headers->add('Pragma', 'no-cache');
+
+// asigna una cabecera Pragma. Cualquier cabecera Pragma existente será descartada.
+$headers->set('Pragma', 'no-cache');
+
+// Elimina las cabeceras Pragma y devuelve los valores de las eliminadas en un array
+$values = $headers->remove('Pragma');
+
+Se puede CAMBIAR el formato de la respuesta:
+
+$response = Yii::$app->response;
+$response->format = \yii\web\Response::FORMAT_JSON; //Cambia el formato de la respuesta.
+$response->data = ['message' => 'hello world'];
+
+Tenemos todos estos formatos:
+
+HTML: implementado por yii\web\HtmlResponseFormatter. (default)
+XML: implementado por yii\web\XmlResponseFormatter.
+JSON: implementado por yii\web\JsonResponseFormatter.
+JSONP: implementado por yii\web\JsonResponseFormatter.
+
+Creo mi propia respuesta de tipo JSON, php ya tiene la funcion json_encode que hace lo mismo.
+public function actionInfo()
+{
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    return [
+        'message' => 'hello world',
+        'code' => 100,
+    ];
+}
+
+REDIRECCIONAR ->
+
+public function actionOld()
+{
+    return $this->redirect('http://example.com/new', 301);
+}
+
+----------------- SESSION Y COOKIES -------------------
+Se almacenan en $_SESSION y $_COOKIE.
+
+Ahora tenemos el objeto Session.
+
+$session = Yii::$app->session;
+
+// comprueba si una sesión está ya abierta
+if ($session->isActive) ...
+
+// abre una sesión
+$session->open();
+
+// cierra una sesión
+$session->close();
+
+// destruye todos los datos registrados por la sesión.
+$session->destroy();
+
+Acceder a una session:
+
+$session = Yii::$app->session;
+// devuelve una variable de sesión. Los siguientes usos son equivalentes:
+$language = $session->get('language'); //la mejor
+$language = $session['language'];
+$language = isset($_SESSION['language']) ? $_SESSION['language'] : null;
+
+Asignar valor:
+
+/ inicializa una variable de sesión. Los siguientes usos son equivalentes:
+$session->set('language', 'en-US');
+$session['language'] = 'en-US';
+$_SESSION['language'] = 'en-US';
+
+// remueve la variable de sesión. Los siguientes usos son equivalentes:
+$session->remove('language');
+
+
+// comprueba si una variable de sesión existe. Los siguientes usos son equivalentes:
+if ($session->has('language')) ...
+
+
+// recorre todas las variables de sesión. Los siguientes usos son equivalentes:
+foreach ($session as $name => $value) ...
+
+
+Donde guardar la información de la session, posibles sitios:
+
+yii\web\DbSession: almacena los datos de sesión en una tabla en la base de datos.
+yii\web\CacheSession: almacena los datos de sesión en una caché con la ayuda de la configuración del componente caché.
+yii\redis\Session: almacena los datos de sesión usando redis como medio de almacenamiento.
+yii\mongodb\Session: almacena los datos de sesión en MongoDB.
+
+----FLASH DATA------
+Variables de session que duran un turno.
+
+$session = Yii::$app->session;
+
+// Petición #1
+// inicializa el mensaje flash nombrado como "postDeleted"
+$session->setFlash('postDeleted', 'You have successfully deleted your post.');
+
+// Petición #2
+// muestra el mensaje flash nombrado "postDeleted"
+echo $session->getFlash('postDeleted');
+
+// Petición #3
+// $result será `false` ya que el mensaje flash ha sido borrado automáticamente
+$result = $session->hasFlash('postDeleted');
+
+-------------------- COOKIES ---------------------
+
+/ devuelve la colección de cookie (yii\web\CookieCollection) del componente "request"
+$cookies = Yii::$app->request->cookies;
+
+// devuelve el valor "language" de la cookie. Si la cookie no existe, retorna "en" como valor por defecto.
+$language = $cookies->getValue('language', 'en');
+
+// una manera alternativa de devolver el valor "language" de la cookie
+if (($cookie = $cookies->get('language')) !== null) {
+    $language = $cookie->value;
+}
+
+// puedes también usar $cookies como un array
+if (isset($cookies['language'])) {
+    $language = $cookies['language']->value;
+}
+
+// comprueba si hay una cookie con el valor "language"
+if ($cookies->has('language')) ...
+if (isset($cookies['language'])) ...
+
+Enviar cookies ->
+
+// devuelve la colección de cookie (yii\web\CookieCollection) del componente "response"
+$cookies = Yii::$app->response->cookies;
+
+// añade una nueva cookie a la respuesta que se enviará
+$cookies->add(new \yii\web\Cookie([
+    'name' => 'language',
+    'value' => 'zh-CN',
+]));
+
+// remueve una cookie
+$cookies->remove('language');
+// equivalente a lo siguiente
+unset($cookies['language']);
+
+------ Validación de cookies -----
+En Yii siempre van cifradas.
+
+return [
+    'components' => [
+        'request' => [
+            'cookieValidationKey' => 'fill in a secret key here', //aqui va una clave de cifrado
+											que se usará para cifrar y descifrar.
+        ],
+    ],
+];
+
+
+-------------- BASES DE DATOS --------------
+Con QueryBuilder creas codigo sql independiente del sgbd -> sistema de base de datos.
+Ya que se encarga de adaptarlo al postgres, mysql,...
+Está por encima de DAO(db) y PDO.
+
+Active Record está por encima de QueryBuilder, es un ORM. Transforma las tablas en clases, las filas en objetas y columnas en attributos.
+Un Active Record es un tipo especial de modelo.
+Con AR podemos crear relaciones entre tablas, cada AR representa a una tabla.
+
+Query Builder -> (Evitas sql)
+
+$rows = (new \yii\db\Query())
+    ->select('id, name') //si no pasamos el select, es como un select *
+    ->from('user')
+    ->limit(10)
+    ->all();
+
+// que es equivalente al siguiente código:
+
+$query = (new \yii\db\Query())
+    ->select('id, name')
+    ->from('user')
+    ->limit(10);
+
+	Vamos a estudiar el Query Builder:
+
+-----Select()------
+
+	$query->select(['id', 'email']); MEJOR USAR ARRAYS
+
+	// equivalent to:
+
+	$query->select('id, email');
+
+	Podemos usar alias:
+		$query->select(['user.id AS user_id', 'email']);
+
+		// equivalent to:
+
+		$query->select('user.id AS user_id, email');
+
+Si no llamamos el metodo select() es como un *.
+
+Podemos usar consultas como subconsultas:
+$subQuery = (new Query())->select('COUNT(*)')->from('user');
+
+// SELECT `id`, (SELECT COUNT(*) FROM `user`) AS `count` FROM `post`
+$query = (new Query())->select(['id', 'count' => $subQuery])->from('post');
+
+Distinct();
+// SELECT DISTINCT `user_id` ...
+$query->select('user_id')->distinct();
+
+addSelect()
+$query->select(['id', 'username'])
+    ->addSelect(['email']);
+
+------from() -------
+// SELECT * FROM `user`
+$query->from('user');
+
+
+$query->from(['public.user u', 'public.post p']);
+// equivalent to:
+$query->from('public.user u, public.post p'); //PRODUCTO CARTESIANO
+
+Alias ------
+$query->from(['u' => 'public.user', 'p' => 'public.post']);
+el alias es el clave, y la tabla el valor.
+
+---Podemos usar el resultado de una subconsulta
+$subQuery = (new Query())->select('id')->from('user')->where('status=1');
+
+// SELECT * FROM (SELECT `id` FROM `user` WHERE status=1) u
+$query->from(['u' => $subQuery]);
+Cuando en el from se pone una subconsulta siempre hay que ponerle un alias
+
+
+-------------- where() ----------------
+	4 formas distintas:
+	-string format, e.g., 'status=1'
+	-hash format, e.g. ['status' => 1, 'type' => 2]
+	-operator format, e.g. ['like', 'name', 'test']
+	-object format, e.g. new LikeCondition('name', 'LIKE', 'test')
+
+	-String format : (condiciones sencillas)
+
+	$query->where('status=1');
+
+	// or use parameter binding to bind dynamic parameter values
+	$query->where('status=:status', [':status' => $status]);
+
+	// raw SQL using MySQL YEAR() function on a date field
+	$query->where('YEAR(somedate) = 2015');
+
+	-hash format: (Se limita a la comparación por igualdad)
+
+	// ...WHERE (`status` = 10) AND (`type` IS NULL) AND (`id` IN (4, 8, 15))
+	$query->where([
+    'status' => 10,
+    'type' => null,
+    'id' => [4, 8, 15],
+	]);
+
+	You can also use sub-queries with hash format like the following:
+
+	$userQuery = (new Query())->select('id')->from('user');
+
+	// ...WHERE `id` IN (SELECT `id` FROM `user`)
+	$query->where(['id' => $userQuery]);
+
+	-operator format: [operator, operand1, operand2, ...]
+
+	Como operator, podemos usar -> and, or, not, between, not between, in, not in,
+	 like,not like, exists, not exists, <,>,...
+
+	Ejemplo:
+	x=1 AND (y=3 OR z=5) -> ['and',['=',x,1],['or',['=',y,3],['=',z,5]]]
+
+	La operación AND es la principal que engloba el resulta de x=1 y (y=3 OR z=5), por lo
+	que se empieza por 'and', le sigue la primera operación (izquierda) es simple, por lo que
+	['=',x,1] y luego la segunda operacion(derecha) que a su vez se divide en un OR,
+	por lo que ['or',['=',y,3],['=',z,5]] como segundo operando del 'and'.
+
+	between -> ['between','id',1,10] ->[operator,column,operand1,operand2]
+	not -> ['not', operand1] -> que no se cumpla
+	like -> ['like',name,tester] -> genera: name LIKE '%tester%'
+
+La diferencia de filterWhere() con where(), es que, salta los vacios.
+se puede añadir filterWhere() mas tarde al filterWhere, con andFilterWhere, orFilterWhere(),...
+al igual que al where, se le puede asignar mas condiciones despues, con andWhere(), orWhere(),...
+PERO CUIDADO, OJO PIOJO -> eso toma como primer parametro, lo que ya habia, y le aplica
+la operacion OR, AND, ... con la condición que se pasa como parametro.
+
+------------ join() --------------------------
+$query->join('LEFT JOIN',tabla,condicion);
+
+Existen tres mejores soluciones:
+	-innerJoin()
+	-leftJoin()
+	-rightJoin()
+
+	$query->leftJoin(tabla,condicion);
+
+------------ orderBy() --------------------------
+$query->orderBy([
+'id' => SORT_ASC,
+'name' => SORT_DESC,
+]);
+
+$query->orderBy('id ASC, name DESC');
+
+-------------- groupBy() -----------------
+Que sepamos que existe y el addGroupBy() para asignar otro parametro para agrupar.
+
+------------- indexBy() -----------------------
+// returns [100 => ['id' => 100, 'username' => '...', ...], 101 => [...], 103 => [...], ...]
+$query = (new \yii\db\Query())
+    ->from('user')
+    ->limit(10)
+    ->indexBy('id')
+    ->all();
+
+	Permite hacer un array, poniendo como clave lo incluido como parametro en indexBy(indice),
+	 y como valor lo que deseemos tomar (all(),column(),scalar(),one()).
+	 Y asi, hacemos parejas de clave, valor.
+Pero simplemente se lo acopla al final, no pone parentesis ni nada.
+
+--------------- RENDIMIENTO --------------
+	->one()
+	Esto se trae todas las filas, pero solo te muestra una. Desde un punto de vista, de
+	rendimiento y escalabilidad es muy pobre.
+	Lo suyo sería poner limit(1):
+	->limit(1)->one(1);
+
+	Solo se trae 1 y es la que se muestra.
+	Tambien hay que tener en cuenta, ya que muchas veces el where, ya filtra, para
+	que la condición solo la cumpla una fila, que es la que se trae y con one() es
+	la que se muestra.
+
+	------each y batch ---------
+	foreach($query->all() as $user){
+	...
+	}
+	Esto, si $query tubiese 1000000 filas, la RAM petaría, ya que se lo intenta
+	traer todo a la vez.
+
+	-Se podria sustituir el all() por un each(), que se trae las filas por tandas,
+	por defecto 100,es decir, la primera vez que se llama, se trae las primeras 100, por lo
+	que hasta que no se ejecuta la 101 vez, no se vuelve a traer otras 100. Cuando se ejecuta
+	la numero 50, no se la pide al postgres, ya que la tiene en memoria de la primera vez que
+	se ejecutó (y se trajo las 100 primeras filas). Ponemos as $user, ya que podemos ir
+	fila a fila.
+
+	-Se podria sustituir el all() por batch(), que se trae las 100 primeras filas, pero
+	te devuelve un array (las 100), por eso ponemos as $users, por lo que dentro del
+	foreach, deberiamos hacer otro bucle, para recorrer ese array de 100 filas.
+
+--------------------- ACTIVE RECORDS ---------------------
+
+Active records es un tipo de modelo que se apoya en una tabla.
+$model->attributes -> te devuelve los atributos de un modelo.
+$model->scenarios() ->devuelve los escenarios del modelo.
+$model->isNewRecord ->Devuelve true si el modelo no existe en la bd. (Se ha instanciado, pero aun no se ha introducido.)
+$model->attributes = ['titulo' => 'el patio', 'anyo' => 1999];
+Asignación masiva de atributos.
+$model->validate() -> comprobamos si las reglas de validacion se cumplen
+$model->save() -> Esto hace un validate e inserta en la base de datos el modelo.
+
+app\models\Peliculas::findOne(1) -> devuelve una instancia en base al id, o null
+ si no encuentra nada.
+
+app\models\Peliculas::findAll([1,5]) ->devuelve dos instancias en un array segun id.
+app\models\Peliculas::findAll(['sinopsis' => null]) ->devuelve todas las instancias que cumplan la condicion.
+
+tanto findOne() como findAll() permiten un escalar(un numero), un array ([1,2]) y un array
+asociativo(['sinopsis' => null]). Con la diferencia de devolver One o All.
+
+Active record, crea a partir de una tabla una clase ->
+	De cada columna, crea un atributo.
+
+---------------- ActiveQuery --------------------------
+Consiste en usar el metodo ::find()
+
+$model = app\models\Peliculas::find() ->devuelve instancia de ActiveQuery
+$model->where(...)->all() -> 'Select * from peliculas where ...'; y lo trae todo.
+
+$model->asArray()->all() -> te devuelve lo mismo, pero no en forma de instancias, si no de array.
+$model->getDirtyAttributes() ->devuelve los atributos sucios, los que han sido cambiados y no se
+	ha hecho un save().
+$model->getOldAttributes() -> devuelve los atributos antiguos antes de ser cambiados.
+$model->getOldAttribute('attb') -> devuelve un atributo antiguo.
+
+Recordamos:
+El paso de tipos de sql a PHP
+null -> null
+bool -> bool
+int(smallint,bigint,...)  -> int (si cabe, si no cadena)
+el resto -> String
+numeric -> String
+
+Todas las clases que sean modelos, deben llevar el metodo static tableName()
+con return 'nombre_tabla' al que representa, sobre la que se apoya.
+ IMPORTANTE!!!!
+
+Entre modelos hay relaciones, por ejemplo Peliculas y Generos. La relación generos, te
+devuelve la instancia del genero de una determinada pelicula, devuelve una instancia de tipo Generos.
+Sin embargo la relación peliculas, devuelve un tipo Peliculas[], ya que un genero, puede pertenecer
+a varias peliculas.
+
+-------------------- DECLARACION DE REGLAS ----------------------
+
+Las reglas de validaciones se aplican a un modelo.
+Habria que declarar el metodo rules() o sobreescribirlo.
+Cada regla, es un array.
+
+	rules(){
+		return[
+			[1 regla],
+			[2 regla],
+			...
+		];
+	}
+
+	Regla:
+1º el atributo o atributos. entre []
+2º validador -> a que tipo de regla se refiere.
+3º on => ['scenario1',...] se puede definir los scenarios donde se aplica, si no se
+	pone on, se aplica a todos los scenarios.
+4º -> Si tiene opciones, se pondría aqui.
+
+[['password'], 'string', 'max' => 60], //esto es una regla max => 60 es una opcion del validador string
+[['username'],'required','message' => 'Please choose a username'];
+	message es una opcion del validador required. Personalizo el mensaje de error.
+
+
+----Validacion condicional -----------
+
+Usamos when ->
+[['state'],'required','when' => function($model){
+	return $model->country == 'USA';	//debe devolver true para que se valide,
+										//si no, no se valida y se salta. No falla.
+}]
+//Esta regla sería -> El estado es required 'cuando' country es USA, si no, no.
+
+
+-------------- FILTRADO DE DATOS ---------------
+
+return [
+	[['username', 'email'], 'trim'],	//al validar el modelo trimeas esos dos atributos
+	[['username', 'email'], 'default'],	//convierte los vacios en algo, normalmente en nulo.
+];
+
+Como validador, podemos introducir cualquier función que reciba un parametro y que
+devuelvan un valor.
+
+Por ejemplo usaremos: intval(),floatval(),strval(),boolval(),...
+	Cuando hagamos un validate, tb haremos conversión de tipo, si usamos alguna de estas
+	funciones...
+
+Estas funciones podemos usarlas a través del validador filter.
+
+[['age'],'filter','filter' => 'intval', 'skipOnEmpty' => true] //si es vacio, no se aplica la regla
+el validador filter, tiene la opcion filter con la que aplica la función.
+
+skipOnEmpty ó skipOnError podemos usar.
+skipOnError -> si el attrb tiene errores de alguna otra regla anterior, no se aplica esta regla.
+
+
+---------- Manejadores de inputs vacios----------------------
+
+[['username','email'], 'default'] //Si son vacios los convierte a nulos
+[['level'], 'default', 'value' => 1] //Si es vacio lo convierte a 1
+
+Para Yii vacio es considerado: string vacio, array vacio o nullo.
+Se puede modificar eso :
+['agree','required','isEmpty' => function($value){
+	return empty($value);
+}];
+
+---------- VALIDADORES PRINCIPALES o predeterminados-------------
+boolean -> comprueba si valor logico
+captcha -> comprobacion para ver si no es un robot
+compare -> comparar si dos attbr son iguales.(opciones -> compareValue, operator,...)
+date -> comprueba si tiene forma de fecha (no el tipo) o de fecha y hora (datetime), o de hora solo.(time)
+default -> ya hemos visto
+double -> comprueba si es double
+//each ->
+email -> si tiene forma de email
+exist -> el attrb es una clave ajena, comprueba que esa clave ajena, exista en su tabla como primary key.
+		No funciona en cliente, solo servidor.
+file -> checkeamos el archivo que vamos a subir
+filter -> ya hemos visto, filtrado general
+image -> checkeamos la imagen, ancho, alto, extension,...
+ip -> comprueba que es una direccion IP
+in -> comprueba si esta en un conjunto de valores
+integer -> comprueba si el valor es un entero
+match -> checkea a partir de una regExp (opcion -> pattern)
+number -> comprueba si es un número (opcion ->max, min)
+required -> ya visto
+safe -> marca attrb como seguro, no hace validacíon ni filtro, al marcarlo como seguro, se le puede hacer asignación masiva
+unique -> comprueba que ese valor no existe ya en la db
+url -> comprueba si tiene forma de url.
+
+-------- Creacion de validadores --------------
+-Validadores en linea: (función anónima)
+	Signatura -> function($attribute, $params, $validator){}
+Ejemplo:
+
+['token', function($attribute, $params, $validator){
+	if(!ctype_alum($this->$attribute)){
+		$this->addError($attribute, 'The token must contain letters or digit!');
+	}
+}]
+
+Ó se puede llamar a una función ya creada:
+
+['token', 'funcionHola']...
+
+public function funcionHola($attribute, $params, $validator)
+{
+if(!ctype_alum($this->$attribute)){
+	$this->addError($attribute, 'The token must contain letters or digit!');
+}
+}
+
+-------------------- PARA EMPEZAR UN PROYECTO con repositorio en git ---------------
+hub clone iesdonana/mueveme-gallegocerezuela
+cd directorio...
+make install
+db/create.sh -> Crea db 'mueveme' y 'mueveme_test', crea usuario mueveme y pass mueveme
+db/load.sh -> inyecta el archivo db/mueveme.sql
+
+----------------- FORMATEADOR ------------------
+
+con Yii\app\formatter;
+
+$formatter->asDate(new Date(), 'long');
+
+------------- DATA PROVIDERS -------------------
+Un proveedor de datos, te ordena y pagina.
+Un proveedor de datos, espera la llegada de datos, con los cuales, ordena y pagina.
+
+Los pasos serían:
+Creamos el proveedor
+Entradas:
+le pasamos el pagination
+le pasamos el sort
+deberia saber en que page está (url) y el sentido de la ordenacion
+le pasamos los datos
+y obtendriamos como salida:
+models, count y totalCount (mas destacados)
+count()-> devuelve el numero de objetos que hay en esa pagina
+
+De alguna manera, es agrupar, el ordenador, el paginador y el origen de los datos.
+
+--------------- WIDGETS ------------------
+Cualquier elemento gráfico que ponemos en una web (vista).
+Los widgets de datos, son los que visualizan datos.
+	- DetailView -> visualiza una instancia de un modelo.
+	- ListView -> visuaiza muchas instancias, cada una en una vista parcial.
+		Esto es, que se renderizan dentro de otra vista.
+	- GridView -> Visualiza los datos en forma de tabla, pero a su vez, permite la
+	paginacion, ordenacion, borrado, consultas, ...
+
+FORMA DE APLICARLO: (lo uso en una vista)
+
+DetailView -->
+
+<?= DetailView::widget([
+	'model' => $pelicula,
+	'attributes' => [
+		'titulo',
+		'anyo',
+		[
+			'label' => 'duracion',
+			'value' => $pelicula->duracion*60,
+			'format' => 'duration'
+		],
+		'created_at:datetime',
+		'precio:currency'
+	]
+])
+el formato text -> escapa lo que entre por value.
+el formato text es el formato por defecto en DetailView.
+el formato html -> escapa lo que entra por value, elimina todo lo peligroso.
+
+ListView -->
+Se le tiene que pasar el dataProvider y la vista parcial.
+
+<?= ListView::widget([
+	'dataProvider' => $dataProvider, //el data provider, viene del controlador.
+	'itemView' => '_genero', //este ListView lo hacemos desde index.
+]); ?>
+
+GridView ->
+
+<?= GridView::widget([
+	'dataProvider' => $dataProvider,
+]); ?>
+
+Te ofrece el CRUD, a nivel de instancias, una a una, ordenacion, paginacion,...
+
+En un dataProvider, los datos vienen de una consulta, de una ActiveQuery.
+
+$dataProvider = new ActiveDataProvider([
+	'query' => Peliculas::find(),
+]);
+
+En la vista, habria que trabajar con -> GridView::widget([
+	'dataProvider' => $dataProvider,
+	'columns' => [	//Las columnas que queremos que aparezcan
+		'titulo',
+		'anyo',
+		'precio',
+		... //Hay 3 tipos de columnas, DataColumn, SerialColumn, ActionColumn
+			//Habria que ponerlo entre [ 'class' => SerialColumn::class, 'attribute' => 'titulo']
+			//Si solo ponemos 'titulo' sin [], da por hecho que es DataColumn con atributo titulo.
+		[
+		'attribute' => 'duracion',
+		'value' => function($model){
+			return $model*60;
+			}
+		'format' => 'duration', //Podemos coger cada atributo y aplicarle una configuracion
+		],
+		'genero.genero', //Podemos acceder a traves de la relacion genero, al atributo genero
+			//1º genero es la relacion, 2º genero es el atributo,
+	]
+]);
+
+----------------------- BUSCADORES ------------------------
+Para los buscadores, crearemos modelos parecidos al modelo que queremos buscar, en
+nuestro caso, vamos a crear una clase en la carpeta models, PeliculasSearch que
+extiende Peliculas.
+
+Cambiaremos las reglas de validaciones, ya que no son las mismas.
+
+Tiene que implementar un metodo search($params) que tiene que retornar un ActiveDataProvider
+
+
+-------- WIDGETS DE LA COMUNIDAD ---------
+demos.krajee.com --> web donde hay muchos WIDGETS
+
+--------- INTRODUCIR JS --------------
+
+$js = <<<EOF		//Aqui meto todo lo de javascript
+	$('#boton').on('click',function(){
+		alert('hola');
+	});
+EOF;
+
+$this->registerJs($js, View::POS_READY); //esto ya es en la vista php, el view::pos_ready es como el ready de jquery
+
+--------------------- AUTENTICAR UN USUARIO ------------------
+Es el proceso de login, identificarte ante la aplicacion.
+Tenemos que tener una clase que implemente la interfaz yii\web\IdentityInterface
+y esa clase va a representar al usuario dentro de la aplicación.
+Cambiar en la configuración, carpeta web.php, el componente de aplicación 'user',
+y cambiar el identityClass -> app\models\Usuarios::class.
+
+Componente de aplicación:
+Yii:.$app->user
+yii\web\User
+Se encargada de todo lo que tiene que ver con los usuarios.
+
+app\models\Usuarios
+Subclase de ActiveRecord e implementa la interfaz yii\web\IdentityInterface
+Un usuario logueado, será instancia del modelo Usuarios
+
+LoginForm -> subclase de Model
+Modelo que se encarga de recoger los datos del usuario del login, y tb se encarga de loguearlo.
+
+SiteController (Acción: login())
+Primera accicon, load de SiteController
+Segunda accion, login de SiteController
+Tercera accion, valida el LoginForm
+Cuarta accion, si valida se hace el login del componente de aplicación Yii::$app->user
+Quinta accion, LoginForm llama a getuser() del modelo, para buscar si existe el usuario en la db
+Si existe, se loguea y listo.
+
+----Validación password ----
+Componente de aplicacion:
+Yii::$app->security
+
+El encabezado y pie de pagina, está en views/layout/main.php
+
+--------------- CIFRAR CONTRASEÑA AL HACER UN INSERT DE USUARIO --------------
+
+$user->save() -> inserta en la tabla el usuario y su contra, pero sin cifrar.
+
+Como le pasamos el crypt:
+Yii::$app->security->generatePasswordHash('password'); Podriamos usar este método.
+ Pero habria que cifrar la contraseña en todos los cambios de esta.
+ Lo suyo sería hacer cargo al modelo Usuarios el responsable de esta tarea, que antes
+ de hacer save() se cifre la contraseña.
+
+ Creamos un metodo beforeSave():
+ 	public function beforeSave($insert) //valor true si es insert, o false si es update
+	{
+		if (!parent::beforeSave($insert)){
+			return false; //hay que llamar al del padre para que no se pierda.
+		}
+		$this->password = Yii::$app->security->generatePasswordHash($this->password);
+		return true;
+	}
+
+------------------- Vistas Parciales-------------------
+Las vistas parciales, sirven para sacar factor comun.
+Si una vista hace render a otra vista, esta tiene que ser una vista parcial.
+Las vistas parciales empiezan por _ , ejemplo _form.php
+
+
+Para que una variable de instancia, pase a formar parte del modelo como atributo,
+debemos redefinir el metodo attributes() del modelo.
+Cogemos los atributos suyo, y le añadimos la variable de instancia.
+
+public function attributes(){
+	return array_merge(parent::attributes(),['password_repeat']);
+}
+
+Y al hacerlo atributo ya, debemos hacerlo seguro, lo añadimos a rules.
+[['password'],safe]
+[['password'],'compare']... Esto en rules, hace que el propio Yii 'compare' el
+password con password_repeat. Debemos marcar como safe al menos el password_repeat.
+Yii busca al atributo que se llame igual _repeat.
+
+
+---- Uso de Goto ------------
+goto salto;
+//Aqui habri una función que se repite abajo
+.
+.
+.
+salto: //etiqueta salto
+funcion repetida que se puede usar arriba y aqui, para sacar factor común, usamos el goto
+
+-------------- Autorizacion -------------------
+
+Conseguimos que la app permita o no, el acceso a una parte del programa, dependiendo
+de los permisos.
+
+	-Filtrado de control de accesos.
+	-Control de accesos en roles. //Mas complejo, podría ser un elemento de innovación para el proyecto
+
+----------- Filtro de control de acceso ----------------
+
+El filtro hace una comprobación previa para autorizar o no el acceso.
+Todo filtro es un comportamiento, por lo que tiene que ir en el behaviors() del controlador.
+
+class -> AccessControl::class,
+only->['login','logout'] //acciones en las que se llevará acabo el filtro
+rules -> [
+ allow -> true, //si se concede o no
+ actions-> ['login','logout'], //A qué acciones
+ roles -> ['?'], //Donde indicamos quie puede acceder '?'=usuario anonimo, '@'=usuario logueado
+]
+[
+ allow -> true,
+ actions -> ['logout'],
+ roles -> ['@']
+]
+
+Aqui por ejemplo, se ejecutará tanto en login como en logout (lo puesto en only),
+se le dejará entrar en ambos a un anonimo, pero a un logout solo puede entrar un usuario logueado.
+
+'matchCallback' => function($rule,$action){
+	return ...;
+}
+//Esto lo podemos poner en rules(), para realizar comprobaciones a la hora de intentar acceder a algun apartado.
+
+---------------------------- AJAX ---------------------------------
+
+Las validaciones ajax, nos permite que las validaciones de servidor tb se vean en el lado del cliente.
+Se ejecutan validaciones en el servidor asíncronamente disparadas por el cliente.
+Una peticion ajax, es una peticion asíncrona.
+Utilizamos objetos Json. json_encode() codifica a json, json_decode() decodifica de json.
+Por norma general, la comunicacion cliente/servidor, se producen al realizar una peticion get/post o
+petición sincrona. La petición ajax (asincrona), se ejecuta por la acción de un evento.
+
+En una vista donde tengamos un ActiveForm, podemos indicar en las opciones: por ejemplo en el create
+	ActiveForm::begin({
+	'enableClientValidation' => true, //activa o desactiva la validacion por parte del cliente
+	'enableAjaxValidation' => true, //activa o desactiva la validacion por ajax en el cliente.
+	})
+
+Luego en el controlador:
+	En la misma accion que queramos.
+	if(Yii::$app->request->isAjax && $model->load(...)){
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		return ActiveForm::validate($model);
+	}
+
+Puesto en el activeForm:.begin(), se ejecuta para todos los atributos del modelo, podemos
+optar por ponerlo selectivamente para algunos atributos.
+$form->field($pelicula,'genero_id', ['enableAjaxValidation' => true]);
+
+-------------- SUBIDAS DE ARCHIVOS ------------------
+Tema 15 -> características adicionales de Yii2
+
+Irá en un formulario, que detrás tendrá un modelo.
+En Yii2 un archivo subido se representa como una instancia de UploadedFile
+
+------------------- MANDAR CORREOS DESDE YII ------------------------
+
+Yii::$app->mailer    Componente que se encargar de todo lo relacionado con mandar correos.
+
+Abría que configurar esto en config/web.php
+
+Se manda desde un controlador y creando una instancia de mailer:
+Email básico.
+Yii::$app->mailer->compose()
+	->setFrom('from@domain.com')
+	->setTo('to@domain.com')
+	->setSubject('Messaje subject')
+	->setTextBody('Plain text context')
+	->setHtmlBody('<b>HTML content</b>')
+	->send();
+
+Se puede enviar por correo el resultado de renderizar una vista
+Yii::$app->mailer->compose('vistaCorreo')
+	->setFrom('from@domain.com')
+	->setTo('to@domain.com')
+	->setSubject('Messaje subject')
+	->send();
+
+La vista 'vistaCorreo' debería estar en @app/mail, a no ser que lo configuremos
+en el web.php con 'viewPath' => '@app/views/emails' por ejemplo.
+Las imagenes irán incrustadas en el correo, codificadas en base 64.
+
+Necesitaremos un agente de servicios de correos, como gmail por ejemplo.
+Es necesario que el correo esté con la autenticación en dos pasos, asociado al telefono.
+Habrá que crear una contraseña de aplicación en el gmail, la cual la tomaremos como
+token.
+
+Habría que poner el useFileTransport a false, y descomentar el modulo de transport
+y configurarlo.
+
+En params.php sirve para definir valores globales de la aplicación. Todo lo que pongas
+ahi puedes acceder desde cualquier parte de la aplicacion.
+
+Existe un archivo .env (si no esta, lo creamos) y ahí incluiremos:
+SMTP_PASS='token'
+
+--------------------- Aplicación de consola --------------------
+
+Se ejecutan ./yii controlador/accion
+
+web/index.php (aplicación web)
+yii (aplicación de consola)
+
+Los comandos están en la carpeta commands, que serán como los controladores en nuestra
+aplicación web.
+
+Serán maryomente usadas para tareas de mantenimiento.
+
+------------------ PRUEBAS --------------------------
+Pruebas automáticas. (caja blanca(AVL, partición equivalente), caja negra).
+Los casos de pruebas estimulas el programa de manera que a la salida puedes comparar
+la salida con una salida ya esperada.
+Podemos decir que los casos de prueba son los datos de entrada.
+
+	SUT -> 'lo que yo voy a testear.';
+
+Tipos de pruebas: Pruebas unitarias,pruebas funcionales,
+pruebas de integración y pruebas de aceptación.
+	Unitarias-> Verifican el funcionamiento de una clase. (modulo de un programa)
+			se usan stubs (clase falsa, por si la usa la clase que estoy probando)
+			y mocks (similar a stubs).
+	Integración-> Tras las unitarias, comprobamos el comportamiento cuando integramos
+			los componentes (clases). NO LAS VAMOS A VER.
+	Aceptación-> Técnica que simula, que una persona navega por la página, por lo
+			que comprueba que el programa funciona como tiene que funcionar desde el punto
+			de vista del usuario.
+	Funcionales-> Similar a Aceptación, pero con la diferencia de que ejecutan la prueba, creando una instancia
+			de la aplicación en si, pasando todos los datos necesarios y comprueba la respuesta.
+			Estas son mucho más rápidas que las de aceptación.
+
+Yii usa codeception para las pruebas funcionales y aceptación.
+
+En meneame con make test, podemos ejecutar algunas pruebas.
+
+YII_ENV ->variable de entorno para saber en que entorno se esta ejecutando la aplicacion
+	(dev, prod, test)
+
+Codeception llama a los casos de pruebas suites, estos son las unitarias, aceptación y funcionales.
+Estan en la carpeta tests, tenemos las carpetas functional, unit y acceptance.
+Dentro de las clases, cada método es un caso de prueba.
+El método _before no es un caso de prueba, se ejecuta automaticamente, justo antes
+de entrar en cada caso de prueba.
+
+Para realizar las pruebas de aceptación -> tests/setup-acceptance.sh (Ejecutar una sola vez)
+Ahora con make test, tb ejecutan las pruebas de aceptación.
+Si queremos quitarlas -> rm tests/acceptance.suite.yml
+
+El ejecutable de Codeception está en vendor/bin/codecept
+
+En codeception hay dos formas de escribir el nombre de las clases que llevan a cabo las pruebas:
+	cept y cest
+
+Se hace así: vendor/bin/codecept generate:cest functional PaginaPrincipalCest
+				ejecutable			generador	tipo de pruebas		nombre de clase
+
+Para ejecutar una prueba solo -> vendor/bin/codecept run functional nombreClasePrueba
+En vez de functional puede ser acceptance o unitaria.
+
+------------------- PASO DE PARAMETROS DEL EMAIL A LA ACCION ---------------------
+Ya en la vista de email ->
+Creamos un enlace por ejemplo:
+<?= Html::a('Text',
+	['/controller/action'], [
+	'data-method' => 'POST',
+	'data-params' => [
+		'param1' => 1,
+		'param2' => 2,
+	],
+	]) ?>
+
+
+	Luego en la accion ->
+	public funcion actionAction(){
+	$param1 = Yii::$app->request->post('param1',null);
+	$param2 = Yii::$app->request->post('param2',null);
+	}
+---------------------------- CodeSniffer ----------------------------
+
+Herramienta que busca/analiza código que probablemente esté mal.
+
+
+CS-Fixer -> Programa que te corrige estos errores.
+
+--------------------------- Fixtures --------------------------------
+Al hacer pruebas o escribir el programa, generan información automaticamente de
+forma aleatoria (normalmente) y su objetivo es rellenar la bd con esa informacion
+sin tener que meterla a mano.
+
+------------------------- Faker -------------------------------------
+Es el que inyecta en las bases de datos los atributos que queramos, los genera
+aleatoriamente.
+
+En unit/fixtures/PersonasFixture se crea la clase Fixture delmodelo que queramos.
+En unit/templates/fixtures/personas.php -> se crean los atributos a introducir
+	en la tabla. Se tiene que llamar igual que la tabla. A esto se le llama plantilla.
+
+Una vez tengamos la plantilla:
+	./yii fixture/generate personas --count=X
+Genera X instancias de personas
+Se generan los datos en ->unit/fixtures/data/personas.php
+
+Y con ./yii fixture/load Personas
+Hay que pasarle el nombre del modelo, y el sistema mismo, se encargará de buscar
+el archivo de datos de personas generado el cual se inyectará.
+
+---------------------- Despliegue en Heroku ----------------------------------
+
+Entornos de ejecución (desarrollo(dev)->local, producción(prod)->remoto, prueba(test)->local/remoto,
+ 						pre-producción(staging)->remoto)
+La nube (Cloud) va a través del git, cada push, la nube se encarga de generar la nueva versión
+del programa y la expande las maquinas virtuales que tenga en uso en cuestion de 0.1s
+
+Tipos de nubes: capas de abstracción(IaaS(Infraestructura como servicio)->VPS
+			, PaaS(Plataforma como Servicio)->Servidor de aplicaciones(Heroku)
+			, SaaS(Software como Servicio))->Aplicaciones de pago por ejemplo
+
+Pagina: 12factor.net/es/ ->Pagina dedicada a una declaración de intenciones.
+
+Para poder tener en varios despliegues(desarrollo, prod..), el mismo código desplegado,
+la misma version... el código está en un repositorio git, que siempre será el mismo.
+Lo que cambia es la configuración, las variables de entorno, que serán distintas
+dependiendo del entorno que nos encontremos.
+
+Una release para Heroku es la unión de un código compilado + la configuración de esta.
+Una release es un paquete listo para desplegar.
+
+logPlex -> lugar donde van todos los registros de una aplicacion.
+para no almacenar los logs independientes en cada maquina virtual (proceso ->DYNO)
+
+Instalar heroku CLI :
+	sudo snap install --classic heroku
+ e instalar ->
+ curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+
+Una vez creado, en la web, creamos una app, y añadimos el addons Heroku postgres
+Luego en la consola haces un heroku login y heroku git:remote -a (nombre de tu app en heroku),
+esto lo haces dentro de tu repositorio de GitHub Entonces ya tenemos dos remotos, github y heroku
+
+Con heroku psql -> podemos acceder a la bd remota de heroku
+debemos crear la extension pgcrypto en la bd remota ->create extension pgcrypto;
+y luego inyectamos las bd, en la remota -> heroku psql < db/mueveme.sql
+
+git push heroku master -> pushear codigo a heroku
+
+Para que funcione, debemos cambiar la configuración para indicar que estamos en entorno de
+produccion, en heroku config (YII_ENV = prod)
+
+heroku config:add YII_ENV=prod
+
+Para volver a una release anterior -> heroku releases:rollback v5
+Pero esto tb genera otra release
+
+heroku ps -> para ver la limitacion horaria mensual que tenemos en heroku
+
+Cuando tenemos mas de un dyno, donde guardamos las variables de sesion?? Ya que si lo
+guardas en un dyno, si resuelves una peticion por otro dyno, no te reconocerá como
+logueado, asi que:
+Deberiamos crear una tabla session->
+CREATE TABLE session(
+	id CHAR(40) PRIMARY KEY,
+	expire INTEGER
+	data BYTEA
+)
+e indicarle al sistema en los componente->
+return [
+'components' => [
+	'session' => [
+		'class' => 'yii\web\DbSession',
+		],
+	],
+];
+
+------------------------ MIGRACIONES ------------------------------
+Las migraciones son el ""git"" para las bases de datos.
+Las migraciones nos permiten hacer cambios incrementales sobre las bases de
+datos. Tambien se puede versionar los cambios, para ver el seguimiento que a
+habido en una bd.
+
+./yii migrate/ -> comando
+
+Todas las migraciones se almacenan en @app/migrations, son archivos .php, contienen
+el código necesario para modificar la bd en esa migración. El nombre del archivo,
+contiene un timestamp, el cual indica el 'orden' en el que se tiene que ejecutar
+esa migración. El orden es muy importante.
+
+El framework debe saber en qué migración está su bd en todo momento.
+
+./yii migrate/create create_xxx_table ->añadir tabla nueva.
+
+el archivo de migracion, tiene algunos metodos como, safeUp(), safeDown(),...
+safeUp, te crea la tabla, te avanza a esa migración.
+safeDown, te borra la tabla, vuelve atrás.
+
+Que se ejecutan con ./yii migrate/up -> TE LLEVA a la ultima migración disponible
+					./yii migrate/down -> Te lleva una migración atrás
+
+Añadir columna ->
+	./yii migrate/create add_xxx_column_to_xxx_table
+
+... Muchas mas opciones: consultar yiiframework/doc/guide -> db-migrations
+
+heroku run bash -> para conectarte a un terminal remoto (DYNO).
+Y desde ese terminal, aplicamos ./yii migrate/up para aplicar las migraciones
+al entorno de producción.
+
+O lo que es lo mismo -> heroku run "./yii migrate";
+
+
+----------------------------- MODALES --------------------------------
+Ventanas interactivas de JavaScript que saltan y tenemos que hacer algo(usuario).
